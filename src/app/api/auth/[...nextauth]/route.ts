@@ -11,7 +11,7 @@ const handler = NextAuth({
     CredentialsProvider({
       clientId: process.env.GOOGLE_CLIENT_ID || "",
       clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
-      profile: async (_profile: any, token: any) => {
+   /*    profile: async (_profile: any, token: any) => {
         const profile = _profile as GoogleProfile;
 
         const mongoClient = await clientPromise;
@@ -35,7 +35,7 @@ const handler = NextAuth({
           });
 
         return _profile;
-      },
+      }, */
     }),
   ],
 });
