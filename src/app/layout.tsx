@@ -1,8 +1,11 @@
+"use client";
+
 import "./globals.css";
 import { Inter } from "next/font/google";
 import AuthenticationGate from "@/components/authenticationGate";
-import { NextAuthProvider } from "@/components/sessionProvider";
 import Navbar from "@/components/navbar";
+import { NextAuthProvider } from "@/components/sessionProvider";
+import { usePathname } from "next/navigation";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,17 +19,25 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const pathname = usePathname();
+
+  const isLoginPage = pathname === "/login";
+
   return (
     <html lang="en">
       <body className={inter.className}>
-        <NextAuthProvider>
-          <AuthenticationGate>
-            <div className="flex flex-col h-screen">
-              <Navbar />
-              <main className=" flex-1 my-8">{children}</main>
-            </div>
-          </AuthenticationGate>
-        </NextAuthProvider>
+        {isLoginPage ? (
+          children
+        ) : (
+          <NextAuthProvider>
+            <AuthenticationGate>
+              <div className="flex flex-col h-screen">
+                <Navbar />
+                <main className=" flex-1 my-8">{children}</main>
+              </div>
+            </AuthenticationGate>
+          </NextAuthProvider>
+        )}
       </body>
     </html>
   );

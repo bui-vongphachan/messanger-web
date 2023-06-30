@@ -1,20 +1,25 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import { redirect } from "next/navigation";
-import { Fragment } from "react";
+import { redirect, usePathname } from "next/navigation";
+import { Fragment, useState } from "react";
 
 const AuthenticationGate = (props: { children: React.ReactNode }) => {
+  const pathname = usePathname();
+
+  const [isAllowed, setIsAllowed] = useState(false);
+
   const { status, data } = useSession({
     required: true,
     onUnauthenticated() {
-      redirect("/api/auth/signin");
+      if (pathname !== "/login") return redirect("/login");
+
+      setIsAllowed(true);
     },
   });
 
-  console.log({ status, data });
-
-  if (status === "loading") return <div className=" h-full">Loading...</div>;
+  if (status === "loading" && !isAllowed)
+    return <div className=" h-full">Loading...</div>;
 
   return <Fragment>{props.children}</Fragment>;
 };

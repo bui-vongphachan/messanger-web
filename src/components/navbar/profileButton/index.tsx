@@ -1,4 +1,5 @@
 import ProfileImage from "./profileImage";
+import SignOutButton from "./signOutButton";
 
 const ProfileButton = () => {
   return (
@@ -44,15 +45,7 @@ const ProfileButton = () => {
           Settings
         </a>
 
-        <a
-          href="#"
-          className="block px-4 py-2 text-sm text-gray-700"
-          role="menuitem"
-          tabIndex={-1}
-          id="user-menu-item-2"
-        >
-          Sign out
-        </a>
+        <SignOutButton />
       </div>
     </div>
   );
