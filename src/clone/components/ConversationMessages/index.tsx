@@ -1,5 +1,5 @@
 import React from "react";
-
+import Image from "next/image";
 import readedMessageIcon from "../../assets/icons/readed-message.svg";
 import sendedMessageIcon from "../../assets/icons/sended-message.svg";
 
@@ -26,10 +26,6 @@ const ConversationMessages: React.FC<ConversationMessagesProps> = ({
 }) => {
   return (
     <Container>
-      <CurrentConversationDate>
-        <span>HOJE</span>
-      </CurrentConversationDate>
-
       <MessagesList showOption={false}>
         {messages
           .concat(messages)
@@ -50,12 +46,18 @@ const ConversationMessages: React.FC<ConversationMessagesProps> = ({
                   {message.message_time}
 
                   {message.message_type === "out" && message.readed_message && (
-                    <img src={readedMessageIcon} alt="Confirmação de Leitura" />
+                    <Image
+                      src={readedMessageIcon}
+                      alt="Confirmação de Leitura"
+                    />
                   )}
 
                   {message.message_type === "out" &&
                     !message.readed_message && (
-                      <img src={sendedMessageIcon} alt="Confirmação de Envio" />
+                      <Image
+                        src={sendedMessageIcon}
+                        alt="Confirmação de Envio"
+                      />
                     )}
                 </small>
               </Message>

@@ -4,6 +4,7 @@ import Image from "next/image";
 import readedMessageIcon from "../clone/assets/icons/readed-message.svg";
 import mutedConversationIcon from "../clone/assets/icons/muted-conversation.svg";
 import conversationMenuArrowIcon from "../clone/assets/icons/conversation-menu-arrow.svg";
+import { messages } from "./data";
 
 interface Conversation {
   name: string;
@@ -87,7 +88,47 @@ export default function Home() {
         </div>
       </aside>
 
-      <div>Conversation</div>
+      {/* Messages Panel */}
+      <section className="flex flex-col flex-1">
+        {/* Messages Container */}
+        <section className="flex flex-col overflow-hidden flex-1">
+          {/* Message List */}
+          <ul className="flex flex-1 flex-col overflow-y-auto overflow-x-hidden py-4 px-16">
+            {messages
+              .concat(messages)
+              .concat(messages)
+              .concat(messages)
+              .concat(messages)
+              .map((message, index) => {
+                const isMessageIn = message.message_type === "in";
+
+                return (
+                  <div
+                    key={index}
+                    data-value={message.message_type}
+                    className="message"
+                  >
+                    <span>{message.message_content}</span>
+                    <div className="flex items-center ">
+                      <small className=" text-xs leading-3">
+                        {message.message_time}
+                      </small>
+                      <div className="h-[16px] w-[16px]">
+                        <Image
+                          src={readedMessageIcon}
+                          alt="Confirmação de Leitura"
+                          width={16}
+                          height={16}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+          </ul>
+        </section>
+        <footer>Footer</footer>
+      </section>
     </div>
   );
 }
