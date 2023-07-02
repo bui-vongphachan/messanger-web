@@ -10,9 +10,9 @@ import { setContext } from "@apollo/client/link/context";
 import { WebSocketLink } from "apollo-link-ws";
 
 const httpLink = new HttpLink({
-  uri: process.env.NEXT_PUBLIC_BACKEND_URL,
+  uri: "http://localhost:4000/graphql",
 });
-
+/* 
 const authLink = setContext(() => {
   return {
     headers: {},
@@ -21,7 +21,7 @@ const authLink = setContext(() => {
 
 const wsLink = process.browser
   ? (new WebSocketLink({
-      uri: process.env.NEXT_PUBLIC_GRAPHQL_SUBSCRIPTION_ENDPOINT as string,
+      uri: "ws://localhost:4000/graphql",
       options: {
         reconnect: true,
         connectionParams: () => {
@@ -44,10 +44,10 @@ const splitLink = process.browser
       wsLink,
       httpLink
     )
-  : httpLink;
+  : httpLink; */
 
-export const graphql_client = new ApolloClient({
-  link: from([authLink, splitLink]),
+export const graphqlClient = new ApolloClient({
+  link: httpLink,
   cache: new InMemoryCache(),
   credentials: "include",
 });
