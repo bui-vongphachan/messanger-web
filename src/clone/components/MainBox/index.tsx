@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 
+import Image from "next/image";
 import ConversationsList from "../ConversationsList";
 import ConversationMessages from "../ConversationMessages";
 
@@ -100,7 +101,7 @@ const MainBox = () => {
 
         <Footer>
           <button type="button">
-            <img src={emoticonsIcon} alt="Emoticons" />
+            <Image src={emoticonsIcon} alt="Emoticons" />
           </button>
 
           <input
@@ -114,7 +115,7 @@ const MainBox = () => {
           />
 
           <button type="button">
-            <img src={microphoneIcon} alt="Microfone" />
+            <Image src={microphoneIcon} alt="Microfone" />
           </button>
         </Footer>
       </Conversation>

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import readedMessageIcon from "../clone/assets/icons/readed-message.svg";
-import mutedConversationIcon from "../clone/assets/icons/muted-conversation.svg";
+import microphoneIcon from "../clone/assets/icons/send.svg";
 import conversationMenuArrowIcon from "../clone/assets/icons/conversation-menu-arrow.svg";
 import { messages } from "./data";
 
@@ -129,7 +129,18 @@ export default function Home() {
               })}
           </ul>
         </section>
-        <footer>Footer</footer>
+        <footer className="flex items-center mt-auto justify-between py-4 px-2 bg-emerald-100">
+          <input className=" text-sm w-full h-12 py-1 mx-3 rounded-3xl" />
+          <button className=" hover:bg-gray-300 transition-colors px-2 rounded-full shrink-0 w-[48px] h-[48px] flex justify-center items-center">
+            <Image
+              src={microphoneIcon}
+              width={24}
+              height={24}
+              className=" translate-x-[4px]"
+              alt="Microfone"
+            />
+          </button>
+        </footer>
       </section>
     </div>
   );
