@@ -108,17 +108,19 @@ export default function Home() {
                     data-value={message.message_type}
                     className="message"
                   >
-                    <span>{message.message_content}</span>
-                    <div className="flex items-center ">
-                      <small className=" text-xs leading-3">
+                    <span className=" text-sm leading-3 pr-10">
+                      {message.message_content}
+                    </span>
+                    <div className="flex gap-1 items-center absolute right-2 bottom-1">
+                      <small className=" text-[10px] leading-3">
                         {message.message_time}
                       </small>
-                      <div className="h-[16px] w-[16px]">
+                      <div className="h-[16px] w-[16px] hidden">
                         <Image
                           src={readedMessageIcon}
                           alt="Confirmação de Leitura"
-                          width={16}
-                          height={16}
+                          width={14}
+                          height={14}
                         />
                       </div>
                     </div>
