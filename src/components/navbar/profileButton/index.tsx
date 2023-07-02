@@ -1,7 +1,10 @@
+import { useState } from "react";
 import ProfileImage from "./profileImage";
 import SignOutButton from "./signOutButton";
 
 const ProfileButton = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <div className="ml-3 relative">
       <div>
@@ -11,6 +14,7 @@ const ProfileButton = () => {
           id="user-menu-button"
           aria-expanded="false"
           aria-haspopup="true"
+          onClick={() => setIsOpen(!isOpen)}
         >
           <span className="sr-only">Open user menu</span>
           <div className="h-8 w-8">
@@ -19,32 +23,13 @@ const ProfileButton = () => {
         </button>
       </div>
       <div
-        className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5"
+        className="origin-top-right z-50 absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5"
         role="menu"
         aria-orientation="vertical"
         aria-labelledby="user-menu-button"
         tabIndex={-1}
+        style={{ display: isOpen ? "block" : "none" }}
       >
-        <a
-          href="#"
-          className="block px-4 py-2 text-sm text-gray-700"
-          role="menuitem"
-          tabIndex={-1}
-          id="user-menu-item-0"
-        >
-          Your Profile
-        </a>
-
-        <a
-          href="#"
-          className="block px-4 py-2 text-sm text-gray-700"
-          role="menuitem"
-          tabIndex={-1}
-          id="user-menu-item-1"
-        >
-          Settings
-        </a>
-
         <SignOutButton />
       </div>
     </div>
