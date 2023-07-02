@@ -5,6 +5,7 @@ import readedMessageIcon from "../clone/assets/icons/readed-message.svg";
 import microphoneIcon from "../clone/assets/icons/send.svg";
 import conversationMenuArrowIcon from "../clone/assets/icons/conversation-menu-arrow.svg";
 import { messages } from "./data";
+import AutoScroll from "@brianmcallister/react-auto-scroll";
 
 interface Conversation {
   name: string;
@@ -93,15 +94,16 @@ export default function Home() {
         {/* Messages Container */}
         <section className="flex flex-col overflow-hidden flex-1">
           {/* Message List */}
-          <ul className="flex flex-1 flex-col overflow-y-auto overflow-x-hidden py-4 px-16">
+          <AutoScroll
+            showOption={false}
+            className="flex flex-1 flex-col overflow-y-auto overflow-x-hidden py-4"
+          >
             {messages
               .concat(messages)
               .concat(messages)
               .concat(messages)
               .concat(messages)
               .map((message, index) => {
-                const isMessageIn = message.message_type === "in";
-
                 return (
                   <div
                     key={index}
@@ -127,7 +129,7 @@ export default function Home() {
                   </div>
                 );
               })}
-          </ul>
+          </AutoScroll>
         </section>
         <footer className="flex items-center mt-auto justify-between py-4 px-2 bg-emerald-100">
           <input className=" text-sm w-full h-12 py-1 mx-3 rounded-3xl" />
