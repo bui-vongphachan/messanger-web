@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.7.16",
+    "@brianmcallister/react-auto-scroll": "^1.0.5",
     "@types/node": "20.3.2",
     "@types/react": "18.2.14",
     "@types/react-dom": "18.2.6",
@@ -23,6 +24,7 @@
     "postcss": "8.4.24",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "styled-components": "^6.0.1",
     "tailwindcss": "3.3.2",
     "typescript": "5.1.6",
     "universal-cookie": "^4.0.4"

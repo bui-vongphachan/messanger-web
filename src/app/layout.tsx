@@ -25,19 +25,22 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body className={inter.className}>
-        {isLoginPage ? (
+      <body className={inter.className + " h-screen"}>
+        {children}
+        {/*  {isLoginPage ? (
           children
         ) : (
           <NextAuthProvider>
             <AuthenticationGate>
-              <div className="flex flex-col h-screen">
+              <div className="flex flex-col h-screen overflow-hidden bg-blue-950">
                 <Navbar />
-                <main className=" flex-1 my-8">{children}</main>
+                <main className=" flex-1 box-border overflow-auto">
+                  {children}
+                </main>
               </div>
             </AuthenticationGate>
           </NextAuthProvider>
-        )}
+        )} */}
       </body>
     </html>
   );

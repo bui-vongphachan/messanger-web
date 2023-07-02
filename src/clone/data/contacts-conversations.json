@@ -1,0 +1,65 @@
+[
+  {
+    "id": 1,
+    "name": "Contato 1",
+    "last_message": "Lorem Ipsum is simply dummy text of the printing and typesetting",
+    "last_message_data": "23:59",
+    "muted_conversation": true
+  },
+  {
+    "id": 2,
+    "name": "Contato 2",
+    "last_message": "Lorem Ipsum is simply dummy text of the printing",
+    "last_message_data": "Segunda-feira",
+    "muted_conversation": true
+  },
+  {
+    "id": 3,
+    "name": "Contato 3",
+    "last_message": "Lorem Ipsum is simply",
+    "last_message_data": "Ontem",
+    "muted_conversation": false
+  },
+  {
+    "id": 4,
+    "name": "Contato 1",
+    "last_message": "Lorem Ipsum is simply dummy text of the printing and typesetting",
+    "last_message_data": "23:59",
+    "muted_conversation": true
+  },
+  {
+    "id": 5,
+    "name": "Contato 2",
+    "last_message": "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
+    "last_message_data": "Segunda-feira",
+    "muted_conversation": false
+  },
+  {
+    "id": 6,
+    "name": "Contato 3",
+    "last_message": "Lorem Ipsum is simply dummy text of the",
+    "last_message_data": "Ontem",
+    "muted_conversation": true
+  },
+  {
+    "id": 7,
+    "name": "Contato 1",
+    "last_message": "Lorem Ipsum is simply dummy text of the printing",
+    "last_message_data": "23:59",
+    "muted_conversation": true
+  },
+  {
+    "id": 8,
+    "name": "Contato 2",
+    "last_message": "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
+    "last_message_data": "Segunda-feira",
+    "muted_conversation": false
+  },
+  {
+    "id": 9,
+    "name": "Contato 3",
+    "last_message": "Lorem Ipsum is simply dummy",
+    "last_message_data": "Ontem",
+    "muted_conversation": false
+  }
+]

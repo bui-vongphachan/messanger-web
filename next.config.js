@@ -5,6 +5,7 @@ const nextConfig = {
       "localhost",
       "avatars.githubusercontent.com",
       "lh3.googleusercontent.com",
+      "picsum.photos",
     ],
   },
 };
