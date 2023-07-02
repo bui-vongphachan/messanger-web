@@ -34,7 +34,7 @@ export default function Home() {
     <main>
       <Navbar />
       {/* Main container */}
-      <div className=" text-blue-200 bg-blue-900 rounded-lg overflow-hidden shadow-md w-screen flex m-auto md:w-[90%] md:h-[calc(100vh-96px)]">
+      <div className=" text-blue-200 bg-blue-950 rounded-lg overflow-hidden shadow-md w-screen flex m-auto md:w-[90%] md:h-[calc(100vh-96px)]">
         {/* Conversation Panel */}
         <aside className=" max-w-[30%] min-w-[300px] flex flex-col">
           {/* Conversation Container */}
@@ -52,8 +52,8 @@ export default function Home() {
                     key={index}
                     className={
                       (index === selectedUser
-                        ? " bg-blue-700 hover:bg-blue-600 text-white"
-                        : " hover:bg-blue-800") +
+                        ? " bg-blue-800 hover:bg-blue-700 text-white"
+                        : " hover:bg-blue-900") +
                       " relative p-4 group cursor-pointer transition-colors"
                     }
                     onClick={() => setSelectedUser(index)}
@@ -119,7 +119,7 @@ export default function Home() {
         </section>
         {/* Messages Panel */}
         <section
-          className="flex flex-col flex-1 text-black"
+          className="flex flex-col flex-1 bg-blue-900 text-black"
           style={{ display: !selectedUser ? "none" : "flex" }}
         >
           {/* Messages Container */}
@@ -162,9 +162,9 @@ export default function Home() {
                 })}
             </AutoScroll>
           </section>
-          <footer className="flex items-center mt-auto justify-between py-4 px-2 bg-emerald-100">
+          <footer className="flex items-center mt-auto justify-between py-4 px-2 bg-blue-950">
             <input className=" text-sm w-full h-12 py-1 mx-3 rounded-3xl" />
-            <button className=" hover:bg-gray-300 transition-colors px-2 rounded-full shrink-0 w-[48px] h-[48px] flex justify-center items-center">
+            <button className=" hover:bg-blue-800 transition-colors px-2 rounded-full shrink-0 w-[48px] h-[48px] flex justify-center items-center">
               <Image
                 src={microphoneIcon}
                 width={24}
