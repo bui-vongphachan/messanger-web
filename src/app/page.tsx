@@ -7,6 +7,8 @@ import conversationMenuArrowIcon from "../clone/assets/icons/conversation-menu-a
 import { messages } from "./data";
 import AutoScroll from "@brianmcallister/react-auto-scroll";
 import Navbar from "@/components/navbar";
+import { useState, useEffect, useCallback } from "react";
+import { useRouter } from "next/navigation";
 
 interface Conversation {
   name: string;
@@ -24,22 +26,39 @@ const conversations: Conversation[] = new Array(100).fill({
 });
 
 export default function Home() {
+  const router = useRouter();
+
+  const [selectedUser, setSelectedUser] = useState<number | null>(null);
+
   return (
     <main>
       <Navbar />
       {/* Main container */}
-      <div className=" w-screen flex m-auto md:w-[90%] md:h-[calc(100vh-96px)] bg-blue-50">
+      <div className=" text-blue-200 bg-blue-900 rounded-lg overflow-hidden shadow-md w-screen flex m-auto md:w-[90%] md:h-[calc(100vh-96px)]">
         {/* Conversation Panel */}
-        <aside className=" max-w-[30%] min-w-[300px] flex flex-column bg-blue-100">
+        <aside className=" max-w-[30%] min-w-[300px] flex flex-col">
           {/* Conversation Container */}
-          <div className=" bg-blue-200 flex flex-1 overflow-hidden">
+          <div className=" flex flex-col flex-1 overflow-hidden">
+            {/* Search Box */}
+            <section className=" p-4">
+              <h1 className=" text-lg font-semibold">Users</h1>
+            </section>
             {/* Conversation List */}
-            <ul className=" w-full overflow-x-hidden overflow-y-auto divide-y-2 divide-blue-300">
+            <ul className=" w-full overflow-x-hidden overflow-y-auto divide-y-[0px] divide-blue-800">
               {conversations.map((conversation, index) => {
                 return (
                   /* Conversation Item */
-                  <li key={index} className=" relative py-2 px-4">
-                    <div className="flex gap-4">
+                  <li
+                    key={index}
+                    className={
+                      (index === selectedUser
+                        ? " bg-blue-700 hover:bg-blue-600 text-white"
+                        : " hover:bg-blue-800") +
+                      " relative p-4 group cursor-pointer transition-colors"
+                    }
+                    onClick={() => setSelectedUser(index)}
+                  >
+                    <div className="flex items-center gap-4">
                       <Image
                         src={`https://picsum.photos/${100 + index}`}
                         className=" rounded-full"
@@ -48,21 +67,23 @@ export default function Home() {
                         alt=""
                       />
                       <div className="w-[calc(100%-66px)] relative flex flex-col">
-                        <div className="flex justify-between">
-                          <h5 className=" text-base font-normal mb-1 text-ellipsis overflow-hidden whitespace-nowrap">
+                        <div className="flex justify-between items-center">
+                          <h5 className=" text-sm font-normal text-ellipsis overflow-hidden whitespace-nowrap">
                             {conversation.name}
                           </h5>
-                          <span className="text-ellipsis overflow-hidden whitespace-nowrap">
+                          <span className=" text-[9px] text-ellipsis overflow-hidden whitespace-nowrap">
                             {conversation.last_message_data}
                           </span>
                         </div>
                         <div className="flex">
-                          <div className="flex flex-1 gap-2 w-[calc(100%-20px)]">
+                          <div className="flex flex-1 items-center gap-2 w-[calc(100%-20px)]">
                             <Image
+                              width={12}
+                              height={12}
                               src={readedMessageIcon}
                               alt="Mensagem Lida"
                             />
-                            <p className=" text-ellipsis overflow-hidden whitespace-nowrap">
+                            <p className=" text-xs text-ellipsis overflow-hidden whitespace-nowrap">
                               Lorem ipsum dolor, sit amet consectetur
                               adipisicing elit. Rerum porro deleniti suscipit,
                               at nostrum doloremque aspernatur perferendis
@@ -89,8 +110,18 @@ export default function Home() {
           </div>
         </aside>
 
+        {/* Empty Panel */}
+        <section
+          className="flex flex-col flex-1 justify-center items-center"
+          style={{ display: selectedUser ? "none" : "flex" }}
+        >
+          <h1 className=" text-lg font-semibold">Select a user</h1>
+        </section>
         {/* Messages Panel */}
-        <section className="flex flex-col flex-1">
+        <section
+          className="flex flex-col flex-1 text-black"
+          style={{ display: !selectedUser ? "none" : "flex" }}
+        >
           {/* Messages Container */}
           <section className="flex flex-col overflow-hidden flex-1">
             {/* Message List */}
