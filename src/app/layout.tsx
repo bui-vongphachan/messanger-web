@@ -2,9 +2,6 @@
 
 import "./globals.css";
 import { Inter } from "next/font/google";
-import AuthenticationGate from "@/components/authenticationGate";
-import Navbar from "@/components/navbar";
-import { NextAuthProvider } from "@/components/sessionProvider";
 import { usePathname } from "next/navigation";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -25,23 +22,7 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body className={inter.className + " h-screen"}>
-        {children}
-        {/*  {isLoginPage ? (
-          children
-        ) : (
-          <NextAuthProvider>
-            <AuthenticationGate>
-              <div className="flex flex-col h-screen overflow-hidden bg-blue-950">
-                <Navbar />
-                <main className=" flex-1 box-border overflow-auto">
-                  {children}
-                </main>
-              </div>
-            </AuthenticationGate>
-          </NextAuthProvider>
-        )} */}
-      </body>
+      <body className={inter.className + " h-screen"}>{children}</body>
     </html>
   );
 }
