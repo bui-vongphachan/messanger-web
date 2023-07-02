@@ -1,14 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import readedMessageIcon from "../clone/assets/icons/readed-message.svg";
-import microphoneIcon from "../clone/assets/icons/send.svg";
-import conversationMenuArrowIcon from "../clone/assets/icons/conversation-menu-arrow.svg";
 import { messages } from "./data";
 import AutoScroll from "@brianmcallister/react-auto-scroll";
 import Navbar from "@/components/navbar";
-import { useState, useEffect, useCallback } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
+import microphoneIcon from "./send.svg";
 
 interface Conversation {
   name: string;
@@ -77,12 +75,12 @@ export default function Home() {
                         </div>
                         <div className="flex">
                           <div className="flex flex-1 items-center gap-2 w-[calc(100%-20px)]">
-                            <Image
+                            {/*   <Image
                               width={12}
                               height={12}
                               src={readedMessageIcon}
                               alt="Mensagem Lida"
-                            />
+                            /> */}
                             <p className=" text-xs text-ellipsis overflow-hidden whitespace-nowrap">
                               Lorem ipsum dolor, sit amet consectetur
                               adipisicing elit. Rerum porro deleniti suscipit,
@@ -92,14 +90,14 @@ export default function Home() {
                               Libero, fugiat.
                             </p>
                           </div>
-                          <button className=" relative w-[20px] h-[20px]">
+                          {/* <button className=" relative w-[20px] h-[20px]">
                             <Image
                               width={20}
                               height={20}
                               src={conversationMenuArrowIcon}
                               alt="Conversa Silenciada"
                             />
-                          </button>
+                          </button> */}
                         </div>
                       </div>
                     </div>
@@ -148,23 +146,25 @@ export default function Home() {
                         <small className=" text-[10px] leading-3">
                           {message.message_time}
                         </small>
-                        <div className="h-[16px] w-[16px] hidden">
+                        {/*    <div className="h-[16px] w-[16px] hidden">
                           <Image
                             src={readedMessageIcon}
                             alt="Confirmação de Leitura"
                             width={14}
                             height={14}
                           />
-                        </div>
+                        </div> */}
                       </div>
                     </div>
                   );
                 })}
             </AutoScroll>
           </section>
-          <footer className="flex items-center mt-auto justify-between py-4 px-2 bg-blue-950">
-            <input className=" text-sm w-full h-12 py-1 mx-3 rounded-3xl" />
-            <button className=" hover:bg-blue-800 transition-colors px-2 rounded-full shrink-0 w-[48px] h-[48px] flex justify-center items-center">
+          <footer className="flex gap-4 items-center mt-auto justify-between py-4 px-8 bg-blue-950">
+            <div className=" rounded-3xl w-full overflow-hidden">
+              <input className=" text-sm w-full h-12 px-4 outline-none" />
+            </div>
+            <button className=" bg-blue-800 hover:bg-blue-900 transition-colors px-2 rounded-full shrink-0 w-[48px] h-[48px] flex justify-center items-center">
               <Image
                 src={microphoneIcon}
                 width={24}
