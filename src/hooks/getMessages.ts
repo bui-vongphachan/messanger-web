@@ -1,65 +1,25 @@
 import { AnyData } from "@/types";
-import { QueryResult, useQuery } from "@apollo/client";
+import { useLazyQuery } from "@apollo/client";
 import { gql } from "@apollo/client";
 
-export interface GetMessagesQueryResponse {}
+interface QueryResponse {}
 
-interface Variables extends AnyData {}
+interface Variables extends AnyData {
+  conversationId: string;
+}
 
-export const useGetHomeQuery = (): [
-  QueryResult<GetMessagesQueryResponse, Variables>,
-  () => void
-] => {
-  const Result = useQuery<GetMessagesQueryResponse, Variables>(
-    useGetHomeQueryString
-  );
-
-  const more = () => {
-    if (Result.called && Result.data && !Result.loading && !Result.error) {
-      Result.subscribeToMore<GetMessagesQueryResponse>({
-        document: subscriptionString,
-        updateQuery: (prev, { subscriptionData }) => {
-          return {
-            ...prev,
-          };
-        },
-      });
-    }
-  };
-
-  if (Result.error) {
-  }
-
-  if (Result.data) {
-  }
-
-  return [Result, more];
+export const useGetMessages = (props: Variables) => {
+  return useLazyQuery<QueryResponse, Variables>(useGetHomeQueryString, {
+    variables: props,
+  });
 };
 
-export const useGetHomeQueryString = gql`
-  query HomePageQuery {
-    getMyFacebookProfile {
+const useGetHomeQueryString = gql`
+  query GetMessages($conversationId: ID) {
+    getMessages(conversationId: $conversationId) {
       _id
-      name
-      picture
-    }
-    getFacebookProfiles {
-      _id
-      name
-      picture
-      status
-      last_seen
-    }
-  }
-`;
-
-const subscriptionString = gql`
-  subscription GetMoreUserPresences {
-    getMoreUserPresences {
-      status
-      user_id
-      user_name
-      last_seen
+      content
+      conversationId
     }
   }
 `;

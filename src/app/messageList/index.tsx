@@ -1,7 +1,22 @@
-import { messages } from "./data";
+"use client";
+
+import { messages } from "../data";
 import AutoScroll from "@brianmcallister/react-auto-scroll";
+import { useGetMessages } from "@/hooks";
+import { UserContext } from "../page";
+import { useContext, useEffect } from "react";
 
 const MessageList = () => {
+  const { selectedConversation } = useContext(UserContext);
+
+  const [getMessage, { data, loading, error }] = useGetMessages({
+    conversationId: selectedConversation?._id!,
+  });
+
+  useEffect(() => {
+    if (selectedConversation) getMessage();
+  }, [selectedConversation, getMessage]);
+
   return (
     <section className="flex flex-col overflow-hidden flex-1">
       {/* Message List */}

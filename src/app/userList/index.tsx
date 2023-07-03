@@ -16,7 +16,8 @@ const UserList = () => {
 const Content = () => {
   const { user } = useContext(AuthenticationGateContext);
 
-  const { selectedUser, setSelectedUser } = useContext(UserContext);
+  const { selectedUser, setSelectedUser, setSelectedConversation } =
+    useContext(UserContext);
 
   const { data, error, loading } = useGetUsersQuery({
     userId: user ? user._id : "",
@@ -28,41 +29,40 @@ const Content = () => {
 
   return (
     <Fragment>
-      {data.getUsers.map((user, index) => {
+      {data.getUsers.map((item, index) => {
         return (
           /* Conversation Item */
           <li
             key={index}
             className={
-              (user._id === selectedUser?._id
+              (item.user._id === selectedUser?._id
                 ? " bg-blue-800 hover:bg-blue-700 text-white"
                 : " hover:bg-blue-900") +
               " relative p-4 group cursor-pointer transition-colors"
             }
-            onClick={() => setSelectedUser(user)}
+            onClick={() => {
+              setSelectedUser(item.user);
+              setSelectedConversation(item.conversation);
+            }}
           >
             <div className="flex items-center gap-4">
               <Image
-                src={user.image}
+                src={item.user.image}
                 className=" rounded-full"
                 width={"50"}
                 height={"50"}
                 alt=""
               />
-              <div className="w-[calc(100%-66px)] relative flex flex-col">
+              <div className="w-[calc(100%-66px)] relative flex flex-col gap-2">
                 <div className="flex justify-between items-center">
                   <h5 className=" text-sm font-normal text-ellipsis overflow-hidden whitespace-nowrap">
-                    {user.name}
+                    {item.user.name}
                   </h5>
                 </div>
                 <div className="flex">
                   <div className="flex flex-1 items-center gap-2 w-[calc(100%-20px)]">
                     <p className=" text-xs text-ellipsis overflow-hidden whitespace-nowrap">
-                      Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                      Rerum porro deleniti suscipit, at nostrum doloremque
-                      aspernatur perferendis praesentium repellendus id iste
-                      exercitationem facilis debitis dolor dolorum impedit
-                      eveniet! Libero, fugiat.
+                      {item.conversation?.lastMessage}
                     </p>
                   </div>
                 </div>
