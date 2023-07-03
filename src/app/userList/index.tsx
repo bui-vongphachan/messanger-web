@@ -38,7 +38,7 @@ const Content = () => {
               (item.user._id === selectedUser?._id
                 ? " bg-blue-800 hover:bg-blue-700 text-white"
                 : " hover:bg-blue-900") +
-              " relative p-4 group cursor-pointer transition-colors"
+              " relative p-4 group cursor-pointer transition-colors rounded-lg"
             }
             onClick={() => {
               setSelectedUser(item.user);

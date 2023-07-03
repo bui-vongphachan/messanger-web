@@ -68,7 +68,7 @@ const MainContent = () => {
           {/* Conversation Container */}
           <div className=" flex flex-col flex-1 overflow-hidden">
             {/* Search Box */}
-            <section className=" p-4">
+            <section className=" p-4 flex flex-col gap-2">
               <h1 className=" text-lg font-semibold">Users</h1>
               <UserList />
             </section>
