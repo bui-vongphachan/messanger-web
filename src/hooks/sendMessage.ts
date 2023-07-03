@@ -9,7 +9,7 @@ import {
 } from "@apollo/client";
 import { gql } from "@apollo/client";
 
-export interface GetMessagesQueryResponse {}
+interface QueryResponse {}
 
 interface Variables extends AnyData {
   senderId: string;
@@ -21,12 +21,12 @@ interface Variables extends AnyData {
 export const SendMessageQuery = (
   props: Variables
 ): MutationTuple<
-  GetMessagesQueryResponse,
+  QueryResponse,
   Variables,
   DefaultContext,
   ApolloCache<any>
 > => {
-  return useMutation<GetMessagesQueryResponse, Variables>(queryString, {
+  return useMutation<QueryResponse, Variables>(queryString, {
     variables: props,
   });
 };

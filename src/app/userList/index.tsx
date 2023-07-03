@@ -1,21 +1,34 @@
 import { AuthenticationGateContext } from "@/components/authenticationGate";
 import { useGetUsersQuery } from "@/hooks";
 import Image from "next/image";
-import { useContext } from "react";
-import { UserContext } from "./page";
+import { useContext, Fragment } from "react";
+import { UserContext } from "../page";
+import UserListLoading from "./loading";
 
 const UserList = () => {
+  return (
+    <ul className=" w-full overflow-x-hidden overflow-y-auto divide-y-[0px] divide-blue-800">
+      <Content />
+    </ul>
+  );
+};
+
+const Content = () => {
   const { user } = useContext(AuthenticationGateContext);
 
   const { selectedUser, setSelectedUser } = useContext(UserContext);
 
-  const { result } = useGetUsersQuery({ userId: user ? user._id : "" });
+  const { data, error, loading } = useGetUsersQuery({
+    userId: user ? user._id : "",
+  });
 
-  if (!result.data) return null;
+  if (loading) return <UserListLoading />;
+
+  if (!data || !!error) return null;
 
   return (
-    <ul className=" w-full overflow-x-hidden overflow-y-auto divide-y-[0px] divide-blue-800">
-      {result.data.getUsers.map((user, index) => {
+    <Fragment>
+      {data.getUsers.map((user, index) => {
         return (
           /* Conversation Item */
           <li
@@ -58,8 +71,7 @@ const UserList = () => {
           </li>
         );
       })}
-    </ul>
+    </Fragment>
   );
 };
-
 export default UserList;

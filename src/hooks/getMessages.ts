@@ -2,7 +2,7 @@ import { AnyData } from "@/types";
 import { QueryResult, useQuery } from "@apollo/client";
 import { gql } from "@apollo/client";
 
-interface GetMessagesQueryResponse {}
+export interface GetMessagesQueryResponse {}
 
 interface Variables extends AnyData {}
 
@@ -36,7 +36,7 @@ export const useGetHomeQuery = (): [
   return [Result, more];
 };
 
-const useGetHomeQueryString = gql`
+export const useGetHomeQueryString = gql`
   query HomePageQuery {
     getMyFacebookProfile {
       _id
