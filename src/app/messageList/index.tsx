@@ -2,7 +2,7 @@
 
 import { messages } from "../data";
 import AutoScroll from "@brianmcallister/react-auto-scroll";
-import { useGetMessages } from "@/hooks";
+import { newMessageSubscribeOptions, useGetMessages } from "@/hooks";
 import { UserContext } from "../page";
 import { useContext, useEffect } from "react";
 import { AuthenticationGateContext } from "@/components/authenticationGate";
@@ -11,13 +11,24 @@ const MessageList = () => {
   const { user } = useContext(AuthenticationGateContext);
   const { selectedConversation } = useContext(UserContext);
 
-  const [getMessage, { data, loading, error }] = useGetMessages({
-    conversationId: selectedConversation?._id!,
-  });
+  const [getMessage, { data, loading, error, subscribeToMore, called }] =
+    useGetMessages({
+      conversationId: selectedConversation?._id!,
+    });
 
   useEffect(() => {
     if (selectedConversation) getMessage();
   }, [selectedConversation, getMessage]);
+
+  useEffect(() => {
+    if (!called) return;
+
+    const unsubscriber = subscribeToMore(newMessageSubscribeOptions);
+
+    return () => {
+      unsubscriber();
+    };
+  }, [subscribeToMore, called]);
 
   return (
     <section className="flex flex-col overflow-hidden flex-1">

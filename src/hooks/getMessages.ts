@@ -1,5 +1,5 @@
 import { AnyData, Message } from "@/types";
-import { useLazyQuery } from "@apollo/client";
+import { SubscribeToMoreOptions, useLazyQuery } from "@apollo/client";
 import { gql } from "@apollo/client";
 
 interface QueryResponse {
@@ -26,3 +26,33 @@ const useGetHomeQueryString = gql`
     }
   }
 `;
+
+const subscriptionString = gql`
+  subscription NewMessageSubscriber($conversationId: ID) {
+    newMessageSubscriber(conversationId: $conversationId) {
+      _id
+      conversationId
+      content
+      senderId
+    }
+  }
+`;
+
+export const newMessageSubscribeOptions: SubscribeToMoreOptions<
+  QueryResponse,
+  Variables,
+  { newMessageSubscriber: Message }
+> = {
+  document: subscriptionString,
+  updateQuery: (prev, { subscriptionData }) => {
+    const newDataSet = [...prev.getMessages];
+
+    const newItem = subscriptionData.data.newMessageSubscriber;
+
+    if (newItem) newDataSet.push(newItem);
+
+    return {
+      getMessages: newDataSet,
+    };
+  },
+};
