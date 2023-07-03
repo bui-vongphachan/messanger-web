@@ -15,7 +15,7 @@ interface Variables extends AnyData {
   senderId: string;
   recipientId: string;
   content: string;
-  conversationId: string;
+  conversationId: string | null;
 }
 
 export const SendMessageQuery = (
