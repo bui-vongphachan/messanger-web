@@ -5,8 +5,10 @@ import AutoScroll from "@brianmcallister/react-auto-scroll";
 import { useGetMessages } from "@/hooks";
 import { UserContext } from "../page";
 import { useContext, useEffect } from "react";
+import { AuthenticationGateContext } from "@/components/authenticationGate";
 
 const MessageList = () => {
+  const { user } = useContext(AuthenticationGateContext);
   const { selectedConversation } = useContext(UserContext);
 
   const [getMessage, { data, loading, error }] = useGetMessages({
@@ -24,29 +26,19 @@ const MessageList = () => {
         showOption={false}
         className="flex flex-1 flex-col overflow-y-auto overflow-x-hidden py-4"
       >
-        {messages
-          .concat(messages)
-          .concat(messages)
-          .concat(messages)
-          .concat(messages)
-          .map((message, index) => {
-            return (
-              <div
-                key={index}
-                data-value={message.message_type}
-                className="message"
-              >
-                <span className=" text-sm leading-3 pr-10">
-                  {message.message_content}
-                </span>
-                <div className="flex gap-1 items-center absolute right-2 bottom-1">
-                  <small className=" text-[10px] leading-3">
-                    {message.message_time}
-                  </small>
-                </div>
+        {data?.getMessages.map((message, index) => {
+          const type = message.senderId === user?._id ? "out" : "in";
+          return (
+            <div key={index} data-value={type} className="message">
+              <span className=" text-sm leading-3 pr-10">
+                {message.content}
+              </span>
+              <div className="flex gap-1 items-center absolute right-2 bottom-1">
+                <small className=" text-[10px] leading-3">20:00</small>
               </div>
-            );
-          })}
+            </div>
+          );
+        })}
       </AutoScroll>
     </section>
   );

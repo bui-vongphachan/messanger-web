@@ -1,8 +1,10 @@
-import { AnyData } from "@/types";
+import { AnyData, Message } from "@/types";
 import { useLazyQuery } from "@apollo/client";
 import { gql } from "@apollo/client";
 
-interface QueryResponse {}
+interface QueryResponse {
+  getMessages: Message[];
+}
 
 interface Variables extends AnyData {
   conversationId: string;
@@ -20,6 +22,7 @@ const useGetHomeQueryString = gql`
       _id
       content
       conversationId
+      senderId
     }
   }
 `;
