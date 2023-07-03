@@ -1,8 +1,15 @@
 "use client";
 
+import { User } from "@/types";
 import { useSession } from "next-auth/react";
 import { redirect, usePathname } from "next/navigation";
-import { Fragment, useState } from "react";
+import { createContext, useState } from "react";
+
+export const AuthenticationGateContext = createContext<{
+  user: User | null;
+}>({
+  user: null,
+});
 
 const AuthenticationGate = (props: { children: React.ReactNode }) => {
   const pathname = usePathname();
@@ -13,7 +20,6 @@ const AuthenticationGate = (props: { children: React.ReactNode }) => {
     required: true,
     onUnauthenticated() {
       if (pathname !== "/login") return redirect("/login");
-
       setIsAllowed(true);
     },
   });
@@ -21,7 +27,13 @@ const AuthenticationGate = (props: { children: React.ReactNode }) => {
   if (status === "loading" && !isAllowed)
     return <div className=" h-full">Loading...</div>;
 
-  return <Fragment>{props.children}</Fragment>;
+  return (
+    <AuthenticationGateContext.Provider
+      value={{ user: data ? (data.user as any) : null }}
+    >
+      {props.children}
+    </AuthenticationGateContext.Provider>
+  );
 };
 
 export default AuthenticationGate;

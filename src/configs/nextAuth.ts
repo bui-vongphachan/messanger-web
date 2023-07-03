@@ -56,6 +56,7 @@ export const nextAuthOptions: NextAuthOptions = {
 
       return {
         ...decoded,
+        image: decoded.image || "",
         _id: (decoded as any)._id || "",
       };
     },
@@ -63,6 +64,7 @@ export const nextAuthOptions: NextAuthOptions = {
   callbacks: {
     async session({ session, token }) {
       (session.user as any)._id = token._id;
+      (session.user as any).image = token.image;
       return session;
     },
   },

@@ -4,9 +4,11 @@ import Image from "next/image";
 import { messages } from "./data";
 import AutoScroll from "@brianmcallister/react-auto-scroll";
 import Navbar from "@/components/navbar";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import microphoneIcon from "./send.svg";
-import AuthenticationGate from "@/components/authenticationGate";
+import AuthenticationGate, {
+  AuthenticationGateContext,
+} from "@/components/authenticationGate";
 import { NextAuthProvider } from "@/components/sessionProvider";
 import { useGetUsersQuery } from "@/hooks";
 import { ApolloProvider } from "@apollo/client";
@@ -41,9 +43,11 @@ export default function Home() {
 }
 
 const MainContent = () => {
+  const { user } = useContext(AuthenticationGateContext);
+
   const [selectedUser, setSelectedUser] = useState<number | null>(null);
 
-  const { result } = useGetUsersQuery({ userId: "5349b4ddd2781d08c09890f3" });
+  const { result } = useGetUsersQuery({ userId: user ? user._id : "" });
 
   if (!result.data) return null;
 
