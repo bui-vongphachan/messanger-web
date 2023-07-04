@@ -46,3 +46,7 @@ body {
 .message[data-value="in"] + .message[data-value="out"] {
   @apply mt-4;
 }
+
+.new-message-indicator {
+  @apply shrink-0 flex-col justify-center items-center text-xs rounded-full bg-blue-600 h-6 w-6;
+}

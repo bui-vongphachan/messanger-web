@@ -1,5 +1,9 @@
 import { AuthenticationGateContext } from "@/components/authenticationGate";
-import { useGetUsersQuery, useReadUnreadMessages } from "@/hooks";
+import {
+  GetUnreadMessage,
+  useGetUsersQuery,
+  useReadUnreadMessages,
+} from "@/hooks";
 import Image from "next/image";
 import { useContext, Fragment, useEffect } from "react";
 import { UserContext } from "../contexts";
@@ -22,9 +26,42 @@ const Content = () => {
     recipientId: user?._id!,
   });
 
-  const { data, error, loading } = useGetUsersQuery({
+  const { data, error, loading, updateQuery } = useGetUsersQuery({
     userId: user ? user._id : "",
   });
+
+  const { data: unreadMessage } = GetUnreadMessage(
+    { userId: user?._id! },
+    (data) => {
+      if (!data) return;
+
+      const { user, latestMessage } = data.unreadConversation;
+
+      updateQuery((prev) => {
+        console.log("updateQuery")
+        const index = prev.getUsers.findIndex(
+          (item) => item.user._id === user._id
+        );
+
+        if (index === -1) return prev;
+
+        const prevItem = prev.getUsers[index];
+
+        const newItem = {
+          ...prevItem,
+          latestMessage,
+        };
+
+        const newUsers = [...prev.getUsers];
+
+        newUsers[index] = newItem;
+
+        return {
+          getUsers: newUsers,
+        };
+      });
+    }
+  );
 
   useEffect(() => {
     if (!user) return;
@@ -46,6 +83,7 @@ const Content = () => {
   return (
     <Fragment>
       {data.getUsers.map((item, index) => {
+        const { latestMessage } = item;
         return (
           /* Conversation Item */
           <li
@@ -71,6 +109,22 @@ const Content = () => {
                   <h5 className=" text-sm font-normal text-ellipsis overflow-hidden whitespace-nowrap">
                     {item.user.name}
                   </h5>
+                  <div
+                    className="new-message-indicator"
+                    style={{
+                      display: (() => {
+                        if (!latestMessage) return "none";
+
+                        if (latestMessage.senderId === user?._id) return "none";
+
+                        if (latestMessage.isRead) return "none";
+
+                        return "flex";
+                      })(),
+                    }}
+                  >
+                    1
+                  </div>
                 </div>
                 <div className="flex">
                   <div className="flex flex-1 items-center gap-2 w-[calc(100%-20px)]">

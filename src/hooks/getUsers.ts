@@ -28,6 +28,7 @@ const queryString = gql`
         senderId
         recipientId
         isRead
+        sentDate
       }
       user {
         _id
