@@ -31,6 +31,7 @@ export const GET_MESSAGE_QUERY_STRING = gql`
       content
       senderId
       recipientId
+      sentDate
     }
   }
 `;
@@ -42,6 +43,7 @@ const subscriptionString = gql`
       content
       senderId
       recipientId
+      sentDate
     }
   }
 `;
