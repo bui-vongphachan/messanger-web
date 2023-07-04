@@ -8,9 +8,8 @@ import {
 import Image from "next/image";
 import microphoneIcon from "../send.svg";
 import { useContext, useRef, useState, useCallback, useEffect } from "react";
-import { UserContext } from "../context";
+import { UserContext, MessageContext } from "../contexts";
 import { AuthenticationGateContext } from "@/components/authenticationGate";
-import { MessageContext } from "./context";
 import { useMutation } from "@apollo/client";
 
 const Footer = () => {

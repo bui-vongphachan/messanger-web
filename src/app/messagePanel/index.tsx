@@ -1,7 +1,6 @@
 import { useContext } from "react";
-import { UserContext } from "../context";
+import { UserContext } from "../contexts";
 import Footer from "./footer";
-import MessageContextProvider from "./context";
 import MessageList from "./messageList";
 
 const MessagePanel = () => {
@@ -15,12 +14,10 @@ const MessagePanel = () => {
     );
   }
   return (
-    <MessageContextProvider>
-      <section className="flex flex-col flex-1 bg-blue-900 text-black">
-        <MessageList />
-        <Footer />
-      </section>
-    </MessageContextProvider>
+    <section className="flex flex-col flex-1 bg-blue-900 text-black">
+      <MessageList />
+      <Footer />
+    </section>
   );
 };
 

@@ -3,10 +3,11 @@
 import { AuthenticationGateContext } from "@/components/authenticationGate";
 import AutoScroll from "@brianmcallister/react-auto-scroll";
 import { useContext } from "react";
-import { MessageContext } from "./context";
+import { MessageContext } from "../contexts";
 
 const MessageList = () => {
   const { queryResult } = useContext(MessageContext);
+
   const { user } = useContext(AuthenticationGateContext);
 
   const { data } = queryResult!;

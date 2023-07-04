@@ -6,7 +6,7 @@ import {
   GetMessageQueryResponse,
 } from "@/hooks";
 import { createContext, useContext, useEffect } from "react";
-import { UserContext } from "../context";
+import { UserContext } from "./user";
 import { QueryResult } from "@apollo/client";
 
 export const MessageContext = createContext<{
@@ -15,7 +15,7 @@ export const MessageContext = createContext<{
   queryResult: null,
 });
 
-const MessageContextProvider = (props: { children: React.ReactNode }) => {
+export const MessageContextProvider = (props: { children: React.ReactNode }) => {
   const { user } = useContext(AuthenticationGateContext);
 
   const { selectedUser } = useContext(UserContext);
