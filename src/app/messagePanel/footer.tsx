@@ -61,7 +61,7 @@ const Footer = () => {
   });
 
   return (
-    <footer className="bg-blue-950">
+    <footer className="bg-blue-800">
       <form
         onSubmit={(event) => {
           event.preventDefault();
@@ -80,7 +80,7 @@ const Footer = () => {
         </div>
         <button
           type="submit"
-          className=" bg-blue-800 hover:bg-blue-900 transition-colors px-2 rounded-full shrink-0 w-[48px] h-[48px] flex justify-center items-center"
+          className=" bg-blue-700 hover:bg-blue-900 transition-colors px-2 rounded-full shrink-0 w-[48px] h-[48px] flex justify-center items-center"
           disabled={loading || !!error}
           onClick={() => send()}
         >
