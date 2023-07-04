@@ -1,7 +1,7 @@
 import { AuthenticationGateContext } from "@/components/authenticationGate";
-import { useGetUsersQuery } from "@/hooks";
+import { useGetUsersQuery, useReadUnreadMessages } from "@/hooks";
 import Image from "next/image";
-import { useContext, Fragment } from "react";
+import { useContext, Fragment, useEffect } from "react";
 import { UserContext } from "../contexts";
 import UserListLoading from "./loading";
 
@@ -15,12 +15,29 @@ const UserList = () => {
 
 const Content = () => {
   const { user } = useContext(AuthenticationGateContext);
-
   const { selectedUser, setSelectedUser } = useContext(UserContext);
+
+  const [readMessages, readMessagesResult] = useReadUnreadMessages({
+    senderId: selectedUser?._id!,
+    recipientId: user?._id!,
+  });
 
   const { data, error, loading } = useGetUsersQuery({
     userId: user ? user._id : "",
   });
+
+  useEffect(() => {
+    if (!user) return;
+
+    if (!selectedUser) return;
+
+    readMessages();
+
+    return () => {
+      readMessagesResult.client.stop();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedUser, readMessages]);
 
   if (loading) return <UserListLoading />;
 
