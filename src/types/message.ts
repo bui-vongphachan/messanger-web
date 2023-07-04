@@ -4,4 +4,5 @@ export interface Message {
   content: string;
   senderId: string;
   sentDate: string;
+  isRead: boolean;
 }
