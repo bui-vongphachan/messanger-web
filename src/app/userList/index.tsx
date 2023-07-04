@@ -60,8 +60,8 @@ const Content = () => {
                 alt=""
               />
               <div className="w-[calc(100%-66px)] relative flex flex-col gap-2">
-                <div className="flex justify-between items-center relative">
-                  <h5 className=" w-[80%] text-sm font-normal text-ellipsis overflow-hidden whitespace-nowrap">
+                <div className="flex justify-between items-center relativ pr-8">
+                  <h5 className=" w-[100%] text-sm font-normal text-ellipsis overflow-hidden whitespace-nowrap">
                     {item.user.name}
                   </h5>
                   <div

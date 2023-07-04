@@ -24,9 +24,9 @@ export default function Home() {
                 <main>
                   <Navbar />
                   {/* Main container */}
-                  <div className=" text-blue-200 bg-blue-950 rounded-lg overflow-hidden shadow-md w-screen flex m-auto md:w-[90%] md:h-[calc(100vh-96px)]">
+                  <div className=" text-blue-200 bg-blue-950 rounded-lg overflow-hidden shadow-md w-screen flex m-auto container h-[calc(100vh-96px)]">
                     {/* Conversation Panel */}
-                    <aside className=" max-w-[30%] min-w-[300px] flex flex-col">
+                    <aside className=" w-fit max-w-[30%] min-w-[300px] flex flex-col">
                       {/* Conversation Container */}
                       <div className=" flex flex-col flex-1 overflow-hidden">
                         {/* Search Box */}
