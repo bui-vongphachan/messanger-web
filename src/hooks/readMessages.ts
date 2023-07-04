@@ -15,9 +15,7 @@ export interface ReadMessageVariables extends AnyData {
 export const useReadUnreadMessages = (props: ReadMessageVariables) => {
   return useMutation<ReadMessageQueryResponse, ReadMessageVariables>(
     READ_MESSAGE_QUERY_STRING,
-    {
-      variables: props,
-    }
+    { variables: props }
   );
 };
 

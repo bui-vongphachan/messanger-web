@@ -30,38 +30,34 @@ const Content = () => {
     userId: user ? user._id : "",
   });
 
-  const { data: unreadMessage } = GetUnreadMessage(
-    { userId: user?._id! },
-    (data) => {
-      if (!data) return;
+  GetUnreadMessage({ userId: user?._id! }, (data) => {
+    if (!data) return;
 
-      const { user, latestMessage } = data.unreadConversation;
+    const { user, latestMessage } = data.unreadConversation;
 
-      updateQuery((prev) => {
-        console.log("updateQuery")
-        const index = prev.getUsers.findIndex(
-          (item) => item.user._id === user._id
-        );
+    updateQuery((prev) => {
+      const index = prev.getUsers.findIndex(
+        (item) => item.user._id === user._id
+      );
 
-        if (index === -1) return prev;
+      if (index === -1) return prev;
 
-        const prevItem = prev.getUsers[index];
+      const prevItem = prev.getUsers[index];
 
-        const newItem = {
-          ...prevItem,
-          latestMessage,
-        };
+      const newItem = {
+        ...prevItem,
+        latestMessage,
+      };
 
-        const newUsers = [...prev.getUsers];
+      const newUsers = [...prev.getUsers];
 
-        newUsers[index] = newItem;
+      newUsers[index] = newItem;
 
-        return {
-          getUsers: newUsers,
-        };
-      });
-    }
-  );
+      return {
+        getUsers: newUsers,
+      };
+    });
+  });
 
   useEffect(() => {
     if (!user) return;
@@ -94,7 +90,26 @@ const Content = () => {
                 : " hover:bg-blue-900") +
               " relative p-4 group cursor-pointer transition-colors rounded-lg"
             }
-            onClick={() => setSelectedUser(item.user)}
+            onClick={() => {
+              setSelectedUser(item.user);
+
+              updateQuery((prev) => {
+                let newSet = [...prev.getUsers];
+
+                let { latestMessage, user } = newSet[index];
+
+                if (latestMessage === null) return prev;
+
+                newSet[index] = {
+                  user,
+                  latestMessage: { ...latestMessage, isRead: true },
+                };
+
+                return {
+                  getUsers: newSet,
+                };
+              });
+            }}
           >
             <div className="flex items-center gap-4">
               <Image
