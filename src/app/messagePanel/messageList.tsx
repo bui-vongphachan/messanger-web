@@ -1,39 +1,15 @@
 "use client";
 
-import { messages } from "../data";
-import AutoScroll from "@brianmcallister/react-auto-scroll";
-import { getNewMessageSubscribeOptions, useGetMessages } from "@/hooks";
-import { UserContext } from "../context";
-import { useContext, useEffect } from "react";
 import { AuthenticationGateContext } from "@/components/authenticationGate";
+import AutoScroll from "@brianmcallister/react-auto-scroll";
+import { useContext } from "react";
+import { MessageContext } from "./context";
 
 const MessageList = () => {
+  const { queryResult } = useContext(MessageContext);
   const { user } = useContext(AuthenticationGateContext);
 
-  const { selectedUser } = useContext(UserContext);
-
-  const { data, loading, error, subscribeToMore, called } = useGetMessages({
-    userId: user?._id!,
-    partnerId: selectedUser?._id!,
-  });
-
-  useEffect(() => {
-    if (!called) return;
-
-    const unsubscriber = subscribeToMore(
-      getNewMessageSubscribeOptions({
-        userId: user?._id!,
-      })
-    );
-
-    return () => {
-      unsubscriber();
-    };
-  }, [subscribeToMore, called, user]);
-
-  useEffect(() => {
-    console.log(new Date());
-  }, [user]);
+  const { data } = queryResult!;
 
   return (
     <section className="flex flex-col overflow-hidden flex-1">

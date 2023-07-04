@@ -2,11 +2,11 @@ import { AnyData, Message } from "@/types";
 import { SubscribeToMoreOptions, useQuery } from "@apollo/client";
 import { gql } from "@apollo/client";
 
-interface QueryResponse {
+export interface GetMessageQueryResponse {
   getMessages: Message[];
 }
 
-interface Variables extends AnyData {
+export interface GetMessageVariables extends AnyData {
   userId: string;
   partnerId: string;
 }
@@ -15,10 +15,13 @@ interface SubscriptionVariables extends AnyData {
   userId: string;
 }
 
-export const useGetMessages = (props: Variables) => {
-  return useQuery<QueryResponse, Variables>(GET_MESSAGE_QUERY_STRING, {
-    variables: props,
-  });
+export const useGetMessages = (props: GetMessageVariables) => {
+  return useQuery<GetMessageQueryResponse, GetMessageVariables>(
+    GET_MESSAGE_QUERY_STRING,
+    {
+      variables: props,
+    }
+  );
 };
 
 export const GET_MESSAGE_QUERY_STRING = gql`
@@ -46,7 +49,7 @@ const subscriptionString = gql`
 export const getNewMessageSubscribeOptions = (
   props: SubscriptionVariables
 ): SubscribeToMoreOptions<
-  QueryResponse,
+  GetMessageQueryResponse,
   SubscriptionVariables,
   { newMessageSubscriber: Message }
 > => {
@@ -57,7 +60,7 @@ export const getNewMessageSubscribeOptions = (
       const newDataSet = [...prev.getMessages];
 
       const newItem = subscriptionData.data.newMessageSubscriber;
-      console.log(newItem);
+
       if (newItem) newDataSet.push(newItem);
 
       return {

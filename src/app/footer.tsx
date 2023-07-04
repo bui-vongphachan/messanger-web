@@ -6,10 +6,8 @@ import microphoneIcon from "./send.svg";
 import { useContext, useState } from "react";
 import { UserContext } from "./context";
 import { AuthenticationGateContext } from "@/components/authenticationGate";
-import { useApolloClient } from "@apollo/client";
 
 const Footer = () => {
-  const client = useApolloClient();
   const { user } = useContext(AuthenticationGateContext);
 
   const { selectedUser } = useContext(UserContext);
