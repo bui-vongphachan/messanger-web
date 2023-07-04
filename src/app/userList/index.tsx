@@ -1,8 +1,9 @@
 import { AuthenticationGateContext } from "@/components/authenticationGate";
 import { GetUnreadMessage } from "@/hooks";
+import { Message, User } from "@/types";
 import { removeUnreadIndecator } from "@/utils";
 import Image from "next/image";
-import { useContext, Fragment } from "react";
+import { useContext, Fragment, useCallback } from "react";
 import { UserContext } from "../contexts";
 import UserListLoading from "./loading";
 
@@ -26,6 +27,23 @@ const Content = () => {
 
   GetUnreadMessage({ userId: user?._id! }, getUserQueryResult!);
 
+  const handleClick = useCallback(
+    (item: { user: User; latestMessage: Message | null }, index: number) => {
+      setSelectedUser(item);
+
+      setSelectedUserIndex(index);
+
+      if (!getUserQueryResult) return;
+
+      if (!item.latestMessage) return;
+
+      if (item.latestMessage.isRead) return;
+
+      /*  removeUnreadIndecator(getUserQueryResult, index); */
+    },
+    [getUserQueryResult, setSelectedUser, setSelectedUserIndex]
+  );
+
   if (!getUserQueryResult || getUserQueryResult.loading)
     return <UserListLoading />;
 
@@ -40,16 +58,12 @@ const Content = () => {
           <li
             key={index}
             className={
-              (item.user._id === selectedUser?._id
+              (item.user._id === selectedUser?.user._id
                 ? " bg-blue-800 hover:bg-blue-700 text-white"
                 : " hover:bg-blue-900") +
               " relative p-4 group cursor-pointer transition-colors rounded-lg"
             }
-            onClick={() => {
-              setSelectedUser(item.user);
-              removeUnreadIndecator(getUserQueryResult, index);
-              setSelectedUserIndex(index);
-            }}
+            onClick={() => handleClick(item, index)}
           >
             <div className="flex items-center gap-4">
               <Image

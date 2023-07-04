@@ -23,13 +23,13 @@ const Footer = () => {
 
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const [sendMessage, { data, error, loading }] = useMutation<
+  const [sendMessage, { error, loading }] = useMutation<
     SendMessageQueryResponse,
     SendMessageVariables
   >(SEND_MESSAGE_QUERY_STRING, {
     variables: {
       senderId: user ? user._id : "",
-      recipientId: selectedUser ? selectedUser._id : "",
+      recipientId: selectedUser ? selectedUser.user._id : "",
       content: content,
     },
     onCompleted: (data) => {

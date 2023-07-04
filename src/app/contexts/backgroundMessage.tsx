@@ -13,7 +13,7 @@ export const BackgroundMessageContextProvider = (props: {
   const { selectedUser } = useContext(UserContext);
 
   const [readMessages, readMessagesResult] = useReadUnreadMessages({
-    senderId: selectedUser?._id!,
+    senderId: selectedUser?.user._id!,
     recipientId: user?._id!,
   });
 

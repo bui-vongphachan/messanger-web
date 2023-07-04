@@ -4,7 +4,7 @@ import {
   GetUsersQueryResponse,
   useGetUsersQuery,
 } from "@/hooks";
-import { User } from "@/types";
+import { Chat, User } from "@/types";
 import { QueryResult } from "@apollo/client";
 import {
   createContext,
@@ -15,10 +15,10 @@ import {
 } from "react";
 
 export const UserContext = createContext<{
-  selectedUser: User | null;
+  selectedUser: Chat | null;
   selectedUserIndex: number | null;
   setSelectedUserIndex: Dispatch<SetStateAction<number | null>>;
-  setSelectedUser: Dispatch<SetStateAction<User | null>>;
+  setSelectedUser: Dispatch<SetStateAction<Chat | null>>;
   getUserQueryResult: QueryResult<GetUsersQueryResponse> | null;
 }>({
   selectedUser: null,
@@ -35,7 +35,7 @@ export const UserContextProvider = (props: { children: React.ReactNode }) => {
     null
   );
 
-  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [selectedUser, setSelectedUser] = useState<Chat | null>(null);
 
   const getUserQueryResult = useGetUsersQuery({
     userId: user ? user._id : "",

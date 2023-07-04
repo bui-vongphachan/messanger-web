@@ -15,14 +15,16 @@ export const MessageContext = createContext<{
   queryResult: null,
 });
 
-export const MessageContextProvider = (props: { children: React.ReactNode }) => {
+export const MessageContextProvider = (props: {
+  children: React.ReactNode;
+}) => {
   const { user } = useContext(AuthenticationGateContext);
 
   const { selectedUser } = useContext(UserContext);
 
   const queryResult = useGetMessages({
     userId: user?._id!,
-    partnerId: selectedUser?._id!,
+    partnerId: selectedUser?.user._id!,
   });
 
   useEffect(() => {
