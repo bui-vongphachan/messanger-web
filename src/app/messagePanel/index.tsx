@@ -1,10 +1,22 @@
-import { useContext } from "react";
+import { removeUnreadIndecator } from "@/utils";
+import { useCallback, useContext } from "react";
 import { UserContext } from "../contexts";
 import Footer from "./footer";
 import MessageList from "./messageList";
 
 const MessagePanel = () => {
-  const { selectedUser } = useContext(UserContext);
+  const { selectedUser, getUserQueryResult, selectedUserIndex } =
+    useContext(UserContext);
+
+  const readMessages = useCallback(() => {
+    if (!selectedUser) return;
+
+    if (!getUserQueryResult) return;
+
+    if (selectedUserIndex === null) return;
+
+    removeUnreadIndecator(getUserQueryResult, selectedUserIndex);
+  }, [selectedUser, getUserQueryResult, selectedUserIndex]);
 
   if (!selectedUser) {
     return (
@@ -13,8 +25,12 @@ const MessagePanel = () => {
       </section>
     );
   }
+
   return (
-    <section className="flex flex-col flex-1 bg-blue-900 text-black">
+    <section
+      className="flex flex-col flex-1 bg-blue-900 text-black"
+      onClick={readMessages}
+    >
       <MessageList />
       <Footer />
     </section>

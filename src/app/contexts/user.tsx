@@ -16,16 +16,24 @@ import {
 
 export const UserContext = createContext<{
   selectedUser: User | null;
+  selectedUserIndex: number | null;
+  setSelectedUserIndex: Dispatch<SetStateAction<number | null>>;
   setSelectedUser: Dispatch<SetStateAction<User | null>>;
   getUserQueryResult: QueryResult<GetUsersQueryResponse> | null;
 }>({
   selectedUser: null,
   setSelectedUser: () => {},
   getUserQueryResult: null,
+  selectedUserIndex: null,
+  setSelectedUserIndex: () => {},
 });
 
 export const UserContextProvider = (props: { children: React.ReactNode }) => {
   const { user } = useContext(AuthenticationGateContext);
+
+  const [selectedUserIndex, setSelectedUserIndex] = useState<number | null>(
+    null
+  );
 
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
@@ -35,7 +43,13 @@ export const UserContextProvider = (props: { children: React.ReactNode }) => {
 
   return (
     <UserContext.Provider
-      value={{ selectedUser, setSelectedUser, getUserQueryResult }}
+      value={{
+        selectedUser,
+        setSelectedUser,
+        getUserQueryResult,
+        selectedUserIndex,
+        setSelectedUserIndex,
+      }}
     >
       {props.children}
     </UserContext.Provider>

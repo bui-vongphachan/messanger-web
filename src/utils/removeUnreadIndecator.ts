@@ -1,7 +1,7 @@
 import { GetUsersQueryResponse } from "@/hooks";
 import { QueryResult } from "@apollo/client";
 
-export const addUnreadMessageToUserList = (
+export const removeUnreadIndecator = (
   getUserQueryResult: QueryResult<GetUsersQueryResponse>,
   userListIndex: number
 ) => {

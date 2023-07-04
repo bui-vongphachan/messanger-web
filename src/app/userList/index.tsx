@@ -1,6 +1,6 @@
 import { AuthenticationGateContext } from "@/components/authenticationGate";
-import { GetUnreadMessage, useGetUsersQuery } from "@/hooks";
-import { addUnreadMessageToUserList } from "@/utils";
+import { GetUnreadMessage } from "@/hooks";
+import { removeUnreadIndecator } from "@/utils";
 import Image from "next/image";
 import { useContext, Fragment } from "react";
 import { UserContext } from "../contexts";
@@ -17,8 +17,12 @@ const UserList = () => {
 const Content = () => {
   const { user } = useContext(AuthenticationGateContext);
 
-  const { selectedUser, setSelectedUser, getUserQueryResult } =
-    useContext(UserContext);
+  const {
+    selectedUser,
+    setSelectedUser,
+    getUserQueryResult,
+    setSelectedUserIndex,
+  } = useContext(UserContext);
 
   GetUnreadMessage({ userId: user?._id! }, getUserQueryResult!);
 
@@ -43,7 +47,8 @@ const Content = () => {
             }
             onClick={() => {
               setSelectedUser(item.user);
-              addUnreadMessageToUserList(getUserQueryResult, index);
+              removeUnreadIndecator(getUserQueryResult, index);
+              setSelectedUserIndex(index);
             }}
           >
             <div className="flex items-center gap-4">
@@ -55,8 +60,8 @@ const Content = () => {
                 alt=""
               />
               <div className="w-[calc(100%-66px)] relative flex flex-col gap-2">
-                <div className="flex justify-between items-center">
-                  <h5 className=" text-sm font-normal text-ellipsis overflow-hidden whitespace-nowrap">
+                <div className="flex justify-between items-center relative">
+                  <h5 className=" w-[80%] text-sm font-normal text-ellipsis overflow-hidden whitespace-nowrap">
                     {item.user.name}
                   </h5>
                   <div

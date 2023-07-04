@@ -48,5 +48,5 @@ body {
 }
 
 .new-message-indicator {
-  @apply shrink-0 flex-col justify-center items-center text-xs rounded-full bg-blue-600 h-6 w-6;
+  @apply absolute right-0 shrink-0 flex-col justify-center items-center text-xs rounded-full bg-blue-600 h-6 w-6;
 }
