@@ -4,11 +4,12 @@ import { SendMessageQuery } from "@/hooks";
 import Image from "next/image";
 import microphoneIcon from "./send.svg";
 import { useContext, useState } from "react";
-import { UserContext } from "./page";
+import { UserContext } from "./context";
 import { AuthenticationGateContext } from "@/components/authenticationGate";
-import { ObjectId } from "mongodb";
+import { useApolloClient } from "@apollo/client";
 
 const Footer = () => {
+  const client = useApolloClient();
   const { user } = useContext(AuthenticationGateContext);
 
   const { selectedUser } = useContext(UserContext);

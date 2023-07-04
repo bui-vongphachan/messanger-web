@@ -3,7 +3,7 @@
 import { messages } from "../data";
 import AutoScroll from "@brianmcallister/react-auto-scroll";
 import { getNewMessageSubscribeOptions, useGetMessages } from "@/hooks";
-import { UserContext } from "../page";
+import { UserContext } from "../context";
 import { useContext, useEffect } from "react";
 import { AuthenticationGateContext } from "@/components/authenticationGate";
 

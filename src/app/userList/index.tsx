@@ -2,7 +2,7 @@ import { AuthenticationGateContext } from "@/components/authenticationGate";
 import { useGetUsersQuery } from "@/hooks";
 import Image from "next/image";
 import { useContext, Fragment } from "react";
-import { UserContext } from "../page";
+import { UserContext } from "../context";
 import UserListLoading from "./loading";
 
 const UserList = () => {

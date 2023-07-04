@@ -16,12 +16,12 @@ interface SubscriptionVariables extends AnyData {
 }
 
 export const useGetMessages = (props: Variables) => {
-  return useQuery<QueryResponse, Variables>(useGetHomeQueryString, {
+  return useQuery<QueryResponse, Variables>(GET_MESSAGE_QUERY_STRING, {
     variables: props,
   });
 };
 
-const useGetHomeQueryString = gql`
+export const GET_MESSAGE_QUERY_STRING = gql`
   query GetMessages($userId: ID, $partnerId: ID) {
     getMessages(userId: $userId, partnerId: $partnerId) {
       _id
