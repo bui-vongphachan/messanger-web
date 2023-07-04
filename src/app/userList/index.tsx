@@ -1,12 +1,8 @@
 import { AuthenticationGateContext } from "@/components/authenticationGate";
-import {
-  GetUnreadMessage,
-  useGetUsersQuery,
-  useReadUnreadMessages,
-} from "@/hooks";
+import { GetUnreadMessage, useGetUsersQuery } from "@/hooks";
 import { addUnreadMessageToUserList } from "@/utils";
 import Image from "next/image";
-import { useContext, Fragment, useEffect } from "react";
+import { useContext, Fragment } from "react";
 import { UserContext } from "../contexts";
 import UserListLoading from "./loading";
 
@@ -20,33 +16,14 @@ const UserList = () => {
 
 const Content = () => {
   const { user } = useContext(AuthenticationGateContext);
-  const { selectedUser, setSelectedUser } = useContext(UserContext);
 
-  const [readMessages, readMessagesResult] = useReadUnreadMessages({
-    senderId: selectedUser?._id!,
-    recipientId: user?._id!,
-  });
+  const { selectedUser, setSelectedUser, getUserQueryResult } =
+    useContext(UserContext);
 
-  const getUserQueryResult = useGetUsersQuery({
-    userId: user ? user._id : "",
-  });
+  GetUnreadMessage({ userId: user?._id! }, getUserQueryResult!);
 
-  GetUnreadMessage({ userId: user?._id! }, getUserQueryResult);
-
-  useEffect(() => {
-    if (!user) return;
-
-    if (!selectedUser) return;
-
-    readMessages();
-
-    return () => {
-      readMessagesResult.client.stop();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedUser, readMessages]);
-
-  if (getUserQueryResult.loading) return <UserListLoading />;
+  if (!getUserQueryResult || getUserQueryResult.loading)
+    return <UserListLoading />;
 
   if (!getUserQueryResult.data || !!getUserQueryResult.error) return null;
 
