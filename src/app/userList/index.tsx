@@ -16,8 +16,7 @@ const UserList = () => {
 const Content = () => {
   const { user } = useContext(AuthenticationGateContext);
 
-  const { selectedUser, setSelectedUser, setSelectedConversation } =
-    useContext(UserContext);
+  const { selectedUser, setSelectedUser } = useContext(UserContext);
 
   const { data, error, loading } = useGetUsersQuery({
     userId: user ? user._id : "",
@@ -40,10 +39,7 @@ const Content = () => {
                 : " hover:bg-blue-900") +
               " relative p-4 group cursor-pointer transition-colors rounded-lg"
             }
-            onClick={() => {
-              setSelectedUser(item.user);
-              setSelectedConversation(item.conversation);
-            }}
+            onClick={() => setSelectedUser(item.user)}
           >
             <div className="flex items-center gap-4">
               <Image
@@ -62,7 +58,7 @@ const Content = () => {
                 <div className="flex">
                   <div className="flex flex-1 items-center gap-2 w-[calc(100%-20px)]">
                     <p className=" text-xs text-ellipsis overflow-hidden whitespace-nowrap">
-                      {item.conversation?.lastMessage}
+                      {item.latestMessage?.content}
                     </p>
                   </div>
                 </div>

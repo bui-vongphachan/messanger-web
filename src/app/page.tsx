@@ -16,38 +16,25 @@ import { ApolloProvider } from "@apollo/client";
 import { graphqlClient } from "@/startups";
 import Footer from "./footer";
 import MessageList from "./messageList";
-import { Conversation, User } from "@/types";
+import { User } from "@/types";
 import UserList from "./userList";
 
 export const UserContext = createContext<{
   selectedUser: User | null;
-  selectedConversation: Conversation | null;
   setSelectedUser: Dispatch<SetStateAction<User | null>>;
-  setSelectedConversation: Dispatch<SetStateAction<Conversation | null>>;
 }>({
   selectedUser: null,
-  selectedConversation: null,
   setSelectedUser: () => {},
-  setSelectedConversation: () => {},
 });
 
 export default function Home() {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
-  const [selectedConversation, setSelectedConversation] =
-    useState<Conversation | null>(null);
 
   return (
     <NextAuthProvider>
       <AuthenticationGate>
         <ApolloProvider client={graphqlClient}>
-          <UserContext.Provider
-            value={{
-              selectedUser,
-              setSelectedUser,
-              selectedConversation,
-              setSelectedConversation,
-            }}
-          >
+          <UserContext.Provider value={{ selectedUser, setSelectedUser }}>
             <MainContent />
           </UserContext.Provider>
         </ApolloProvider>

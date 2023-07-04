@@ -1,11 +1,11 @@
-import { AnyData, Conversation, User } from "@/types";
+import { AnyData, Message, User } from "@/types";
 import { useQuery } from "@apollo/client";
 import { gql } from "@apollo/client";
 
 export interface GetUsersQueryResponse {
   getUsers: {
     user: User;
-    conversation: Conversation | null;
+    latestMessage: Message | null;
   }[];
 }
 
@@ -14,19 +14,19 @@ interface Variables extends AnyData {
 }
 
 export const useGetUsersQuery = (props: Variables) => {
-  return useQuery<GetUsersQueryResponse, Variables>(useGetUsersQueryString, {
+  return useQuery<GetUsersQueryResponse, Variables>(queryString, {
     variables: props,
   });
 };
 
-export const useGetUsersQueryString = gql`
+const queryString = gql`
   query GetUsers($userId: String) {
     getUsers(userId: $userId) {
-      conversation {
+      latestMessage {
+        _id
+        content
         senderId
         recipientId
-        lastMessage
-        _id
       }
       user {
         _id

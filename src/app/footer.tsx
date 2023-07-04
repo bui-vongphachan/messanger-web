@@ -11,7 +11,7 @@ import { ObjectId } from "mongodb";
 const Footer = () => {
   const { user } = useContext(AuthenticationGateContext);
 
-  const { selectedConversation, selectedUser } = useContext(UserContext);
+  const { selectedUser } = useContext(UserContext);
 
   const [content, setContent] = useState("");
 
@@ -19,7 +19,6 @@ const Footer = () => {
     senderId: user ? user._id : "",
     recipientId: selectedUser ? selectedUser._id : "",
     content: content,
-    conversationId: selectedConversation ? selectedConversation._id : null,
   });
 
   return (

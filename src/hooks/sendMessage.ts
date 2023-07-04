@@ -1,6 +1,6 @@
 "use client";
 
-import { AnyData } from "@/types";
+import { AnyData, Message } from "@/types";
 import {
   ApolloCache,
   DefaultContext,
@@ -9,13 +9,14 @@ import {
 } from "@apollo/client";
 import { gql } from "@apollo/client";
 
-interface QueryResponse {}
+interface QueryResponse {
+  sendMessage: Message;
+}
 
 interface Variables extends AnyData {
   senderId: string;
   recipientId: string;
   content: string;
-  conversationId: string | null;
 }
 
 export const SendMessageQuery = (
@@ -32,17 +33,16 @@ export const SendMessageQuery = (
 };
 
 const queryString = gql`
-  mutation SendMessage(
-    $senderId: ID
-    $recipientId: ID
-    $content: String
-    $conversationId: ID
-  ) {
+  mutation SendMessage($senderId: ID, $recipientId: ID, $content: String) {
     sendMessage(
       senderId: $senderId
       recipientId: $recipientId
       content: $content
-      conversationId: $conversationId
-    )
+    ) {
+      _id
+      content
+      senderId
+      recipientId
+    }
   }
 `;
