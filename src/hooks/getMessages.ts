@@ -1,5 +1,5 @@
 import { AnyData, Message } from "@/types";
-import { SubscribeToMoreOptions, useLazyQuery } from "@apollo/client";
+import { SubscribeToMoreOptions, useQuery } from "@apollo/client";
 import { gql } from "@apollo/client";
 
 interface QueryResponse {
@@ -7,52 +7,62 @@ interface QueryResponse {
 }
 
 interface Variables extends AnyData {
-  conversationId: string;
+  userId: string;
+  partnerId: string;
+}
+
+interface SubscriptionVariables extends AnyData {
+  userId: string;
 }
 
 export const useGetMessages = (props: Variables) => {
-  return useLazyQuery<QueryResponse, Variables>(useGetHomeQueryString, {
+  return useQuery<QueryResponse, Variables>(useGetHomeQueryString, {
     variables: props,
   });
 };
 
 const useGetHomeQueryString = gql`
-  query GetMessages($conversationId: ID) {
-    getMessages(conversationId: $conversationId) {
+  query GetMessages($userId: ID, $partnerId: ID) {
+    getMessages(userId: $userId, partnerId: $partnerId) {
       _id
       content
-      conversationId
       senderId
+      recipientId
     }
   }
 `;
 
 const subscriptionString = gql`
-  subscription NewMessageSubscriber($conversationId: ID) {
-    newMessageSubscriber(conversationId: $conversationId) {
+  subscription Subscription($userId: ID) {
+    newMessageSubscriber(userId: $userId) {
       _id
-      conversationId
       content
       senderId
+      recipientId
     }
   }
 `;
 
-export const newMessageSubscribeOptions: SubscribeToMoreOptions<
+export const getNewMessageSubscribeOptions = (
+  props: SubscriptionVariables
+): SubscribeToMoreOptions<
   QueryResponse,
-  Variables,
+  SubscriptionVariables,
   { newMessageSubscriber: Message }
-> = {
-  document: subscriptionString,
-  updateQuery: (prev, { subscriptionData }) => {
-    const newDataSet = [...prev.getMessages];
+> => {
+  return {
+    document: subscriptionString,
+    variables: props,
+    updateQuery: (prev, { subscriptionData }) => {
+      const newDataSet = [...prev.getMessages];
 
-    const newItem = subscriptionData.data.newMessageSubscriber;
+      const newItem = subscriptionData.data.newMessageSubscriber;
+      console.log(newItem);
+      if (newItem) newDataSet.push(newItem);
 
-    if (newItem) newDataSet.push(newItem);
-
-    return {
-      getMessages: newDataSet,
-    };
-  },
+      return {
+        getMessages: newDataSet,
+      };
+    },
+  };
 };

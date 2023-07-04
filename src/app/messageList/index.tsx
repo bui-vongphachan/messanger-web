@@ -2,33 +2,38 @@
 
 import { messages } from "../data";
 import AutoScroll from "@brianmcallister/react-auto-scroll";
-import { newMessageSubscribeOptions, useGetMessages } from "@/hooks";
+import { getNewMessageSubscribeOptions, useGetMessages } from "@/hooks";
 import { UserContext } from "../page";
 import { useContext, useEffect } from "react";
 import { AuthenticationGateContext } from "@/components/authenticationGate";
 
 const MessageList = () => {
   const { user } = useContext(AuthenticationGateContext);
-  const { selectedConversation } = useContext(UserContext);
 
-  const [getMessage, { data, loading, error, subscribeToMore, called }] =
-    useGetMessages({
-      conversationId: selectedConversation?._id!,
-    });
+  const { selectedUser } = useContext(UserContext);
 
-  useEffect(() => {
-    if (selectedConversation) getMessage();
-  }, [selectedConversation, getMessage]);
+  const { data, loading, error, subscribeToMore, called } = useGetMessages({
+    userId: user?._id!,
+    partnerId: selectedUser?._id!,
+  });
 
   useEffect(() => {
     if (!called) return;
 
-    const unsubscriber = subscribeToMore(newMessageSubscribeOptions);
+    const unsubscriber = subscribeToMore(
+      getNewMessageSubscribeOptions({
+        userId: user?._id!,
+      })
+    );
 
     return () => {
       unsubscriber();
     };
-  }, [subscribeToMore, called]);
+  }, [subscribeToMore, called, user]);
+
+  useEffect(() => {
+    console.log(new Date());
+  }, [user]);
 
   return (
     <section className="flex flex-col overflow-hidden flex-1">
