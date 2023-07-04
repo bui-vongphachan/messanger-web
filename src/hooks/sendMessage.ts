@@ -1,38 +1,19 @@
 "use client";
 
 import { AnyData, Message } from "@/types";
-import {
-  ApolloCache,
-  DefaultContext,
-  MutationTuple,
-  useMutation,
-} from "@apollo/client";
 import { gql } from "@apollo/client";
 
-interface QueryResponse {
+export interface SendMessageQueryResponse {
   sendMessage: Message;
 }
 
-interface Variables extends AnyData {
+export interface SendMessageVariables extends AnyData {
   senderId: string;
   recipientId: string;
   content: string;
 }
 
-export const SendMessageQuery = (
-  props: Variables
-): MutationTuple<
-  QueryResponse,
-  Variables,
-  DefaultContext,
-  ApolloCache<any>
-> => {
-  return useMutation<QueryResponse, Variables>(queryString, {
-    variables: props,
-  });
-};
-
-const queryString = gql`
+export const SEND_MESSAGE_QUERY_STRING = gql`
   mutation SendMessage($senderId: ID, $recipientId: ID, $content: String) {
     sendMessage(
       senderId: $senderId

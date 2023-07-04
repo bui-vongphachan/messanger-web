@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { UserContext } from "../context";
-import Footer from "../footer";
+import Footer from "./footer";
 import MessageContextProvider from "./context";
 import MessageList from "./messageList";
 
