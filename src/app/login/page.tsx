@@ -13,9 +13,7 @@ const LoginPage = () => {
         <div className=" w-full sm:w-96 flex justify-evenly">
           <button
             className=" bg-blue-300 hover:bg-blue-800 transition-colors p-2 rounded-full"
-            onClick={() =>
-              signIn("google", { callbackUrl: "http://localhost:3000" })
-            }
+            onClick={() => signIn("google", { callbackUrl: "/" })}
           >
             <Image width={64} src={googleIcon} alt="google icon" />
           </button>
