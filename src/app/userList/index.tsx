@@ -4,6 +4,7 @@ import {
   useGetUsersQuery,
   useReadUnreadMessages,
 } from "@/hooks";
+import { addUnreadMessageToUserList } from "@/utils";
 import Image from "next/image";
 import { useContext, Fragment, useEffect } from "react";
 import { UserContext } from "../contexts";
@@ -26,38 +27,11 @@ const Content = () => {
     recipientId: user?._id!,
   });
 
-  const { data, error, loading, updateQuery } = useGetUsersQuery({
+  const getUserQueryResult = useGetUsersQuery({
     userId: user ? user._id : "",
   });
 
-  GetUnreadMessage({ userId: user?._id! }, (data) => {
-    if (!data) return;
-
-    const { user, latestMessage } = data.unreadConversation;
-
-    updateQuery((prev) => {
-      const index = prev.getUsers.findIndex(
-        (item) => item.user._id === user._id
-      );
-
-      if (index === -1) return prev;
-
-      const prevItem = prev.getUsers[index];
-
-      const newItem = {
-        ...prevItem,
-        latestMessage,
-      };
-
-      const newUsers = [...prev.getUsers];
-
-      newUsers[index] = newItem;
-
-      return {
-        getUsers: newUsers,
-      };
-    });
-  });
+  GetUnreadMessage({ userId: user?._id! }, getUserQueryResult);
 
   useEffect(() => {
     if (!user) return;
@@ -72,13 +46,13 @@ const Content = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedUser, readMessages]);
 
-  if (loading) return <UserListLoading />;
+  if (getUserQueryResult.loading) return <UserListLoading />;
 
-  if (!data || !!error) return null;
+  if (!getUserQueryResult.data || !!getUserQueryResult.error) return null;
 
   return (
     <Fragment>
-      {data.getUsers.map((item, index) => {
+      {getUserQueryResult.data.getUsers.map((item, index) => {
         const { latestMessage } = item;
         return (
           /* Conversation Item */
@@ -92,23 +66,7 @@ const Content = () => {
             }
             onClick={() => {
               setSelectedUser(item.user);
-
-              updateQuery((prev) => {
-                let newSet = [...prev.getUsers];
-
-                let { latestMessage, user } = newSet[index];
-
-                if (latestMessage === null) return prev;
-
-                newSet[index] = {
-                  user,
-                  latestMessage: { ...latestMessage, isRead: true },
-                };
-
-                return {
-                  getUsers: newSet,
-                };
-              });
+              addUnreadMessageToUserList(getUserQueryResult, index);
             }}
           >
             <div className="flex items-center gap-4">

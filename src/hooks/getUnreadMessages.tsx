@@ -1,6 +1,11 @@
 import { AnyData, Message, User } from "@/types";
-import { SubscriptionResult, useSubscription } from "@apollo/client";
+import {
+  QueryResult,
+  SubscriptionResult,
+  useSubscription,
+} from "@apollo/client";
 import { gql } from "@apollo/client";
+import { GetUsersQueryResponse } from "./getUsers";
 
 export interface GetUnreadMessageQueryResponse {
   unreadConversation: {
@@ -36,12 +41,39 @@ export const GET_UNREAD_MESSAGES_QUERY_STRING = gql`
 
 export const GetUnreadMessage = (
   variables: GetUnreadMessageVariables,
-  callback?: (data?: GetUnreadMessageQueryResponse) => any
+  getUserQueryResult: QueryResult<GetUsersQueryResponse>
 ): SubscriptionResult<GetUnreadMessageQueryResponse, any> => {
   return useSubscription(GET_UNREAD_MESSAGES_QUERY_STRING, {
     variables,
     onData: (data) => {
-      if (callback) callback(data.data.data);
+      const { updateQuery } = getUserQueryResult;
+
+      if (!data.data.data) return;
+
+      const { user, latestMessage } = data.data.data.unreadConversation;
+
+      updateQuery((prev) => {
+        const index = prev.getUsers.findIndex(
+          (item) => item.user._id === user._id
+        );
+
+        if (index === -1) return prev;
+
+        const prevItem = prev.getUsers[index];
+
+        const newItem = {
+          ...prevItem,
+          latestMessage,
+        };
+
+        const newUsers = [...prev.getUsers];
+
+        newUsers[index] = newItem;
+
+        return {
+          getUsers: newUsers,
+        };
+      });
     },
   });
 };
