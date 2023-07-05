@@ -4,6 +4,7 @@ import { User } from "@/types";
 import { useSession } from "next-auth/react";
 import { redirect, usePathname } from "next/navigation";
 import { createContext, useState, useMemo } from "react";
+import LoadingSpinner from "./pageLoading";
 
 export const AuthenticationGateContext = createContext<{
   user: User | null;
@@ -28,8 +29,7 @@ const AuthenticationGate = (props: { children: React.ReactNode }) => {
     return data ? (data.user as any) : null;
   }, [data]);
 
-  if (status === "loading" && !isAllowed)
-    return <div className=" h-full">Loading...</div>;
+  if (status === "loading" && !isAllowed) return <LoadingSpinner />;
 
   return (
     <AuthenticationGateContext.Provider value={{ user }}>
