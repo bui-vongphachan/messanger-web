@@ -28,6 +28,10 @@ body {
   @apply mt-1;
 }
 
+.message:last-child {
+  @apply mb-8;
+}
+
 .message[data-value="in"] {
   @apply bg-white;
 }
