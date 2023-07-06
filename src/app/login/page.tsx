@@ -6,12 +6,17 @@ import { signIn } from "next-auth/react";
 import Image from "next/image";
 
 const SignInButton = (props: {
+  disabled?: boolean;
   provider: "google" | "facebook";
   children: React.ReactNode;
 }) => {
   return (
     <button
-      className=" bg-blue-300 hover:bg-blue-800 transition-colors p-2 rounded-full"
+      className={
+        " bg-blue-300 transition-colors p-2 rounded-full" + props.disabled
+          ? " opacity-20"
+          : " hover:bg-blue-800 "
+      }
       onClick={() =>
         signIn(props.provider, {
           callbackUrl: process.env.NEXT_PUBLIC_SIGN_IN_CALLBACK_URL,
@@ -32,7 +37,7 @@ const LoginPage = () => {
           <SignInButton provider="google">
             <Image width={64} src={googleIcon} alt="google icon" />
           </SignInButton>
-          <SignInButton provider="facebook">
+          <SignInButton disabled provider="facebook">
             <Image width={64} src={facebookIcon} alt="facebook icon" />
           </SignInButton>
         </div>
