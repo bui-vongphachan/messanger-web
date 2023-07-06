@@ -12,11 +12,9 @@ const SignInButton = (props: {
 }) => {
   return (
     <button
-      className={
-        " bg-blue-300 transition-colors p-2 rounded-full" + props.disabled
-          ? " opacity-20"
-          : " hover:bg-blue-800 "
-      }
+      className={`bg-gray-100 transition-colors p-2 shadow-md rounded-full ${
+        props.disabled ? `opacity-20 cursor-not-allowed ` : `hover:bg-gray-300`
+      }`}
       onClick={() =>
         signIn(props.provider, {
           callbackUrl: process.env.NEXT_PUBLIC_SIGN_IN_CALLBACK_URL,
@@ -30,9 +28,9 @@ const SignInButton = (props: {
 
 const LoginPage = () => {
   return (
-    <div className="h-screen w-full bg-blue-950">
+    <div className="h-screen w-full">
       <div className="flex flex-col gap-12 items-center h-full pt-[10%]">
-        <h1 className=" text-xl text-blue-500 font-medium">Login with ...</h1>
+        <h1 className=" text-xl text-gray-500 font-medium">Login with ...</h1>
         <div className=" w-full sm:w-96 flex justify-evenly">
           <SignInButton provider="google">
             <Image width={64} src={googleIcon} alt="google icon" />
