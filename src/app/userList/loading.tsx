@@ -18,11 +18,11 @@ const UserListLoading = () => {
               />
               <div className="w-[calc(100%-66px)] relative flex flex-col gap-2">
                 <div className="flex justify-between items-center">
-                  <div className=" w-full h-3 bg-blue-200 rounded-md animate-pulse" />
+                  <div className=" w-full h-3 bg-gray-300 rounded-md animate-pulse" />
                 </div>
                 <div className="flex">
                   <div className="flex flex-1 items-center gap-2 w-[calc(100%-20px)]">
-                    <div className=" w-full h-6 bg-blue-200 rounded-md animate-pulse" />
+                    <div className=" w-full h-6 bg-gray-200 rounded-md animate-pulse" />
                   </div>
                 </div>
               </div>
