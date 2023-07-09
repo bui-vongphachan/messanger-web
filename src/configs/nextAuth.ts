@@ -2,7 +2,8 @@ import { COLLECTIONS_USERS } from "@/constants";
 import clientPromise from "@/startups/mongodb";
 import { ObjectId } from "mongodb";
 import { NextAuthOptions } from "next-auth";
-import CredentialsProvider from "next-auth/providers/google";
+import GoogleCredentialsProvider from "next-auth/providers/google";
+import FacebookCredentialsProvider from "next-auth/providers/facebook";
 import jwt from "jsonwebtoken";
 
 export const nextAuthOptions: NextAuthOptions = {
@@ -10,10 +11,15 @@ export const nextAuthOptions: NextAuthOptions = {
     strategy: "jwt",
   },
   providers: [
-    CredentialsProvider({
+    GoogleCredentialsProvider({
       name: "Google",
       clientId: process.env.GOOGLE_CLIENT_ID || "",
       clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
+    }),
+    FacebookCredentialsProvider({
+      name: "Facebook",
+      clientId: process.env.FACEBOOK_CLIENT_ID || "",
+      clientSecret: process.env.FACEBOOK_CLIENT_SECRET || "",
     }),
   ],
   jwt: {

@@ -35,7 +35,7 @@ const LoginPage = () => {
           <SignInButton provider="google">
             <Image width={64} src={googleIcon} alt="google icon" />
           </SignInButton>
-          <SignInButton disabled provider="facebook">
+          <SignInButton provider="facebook">
             <Image width={64} src={facebookIcon} alt="facebook icon" />
           </SignInButton>
         </div>
