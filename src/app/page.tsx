@@ -26,15 +26,10 @@ export default function Home() {
                   {/* Main container */}
                   <div className="rounded-lg overflow-hidden shadow-md w-screen flex m-auto container h-[calc(100vh-96px)]">
                     {/* Conversation Panel */}
-                    <aside className=" bg-white w-fit max-w-[30%] min-w-[300px] flex flex-col">
+                    <aside className=" bg-white flex-1 w-fit max-w-[30%] min-w-[300px] flex flex-col">
                       {/* Conversation Container */}
-                      <div className=" flex flex-col flex-1 overflow-hidden">
-                        {/* Search Box */}
-                        <section className=" p-4 flex flex-col gap-2">
-                          <h1 className=" text-lg font-semibold">Users</h1>
-                          <UserList />
-                        </section>
-                      </div>
+
+                      <UserList />
                     </aside>
                     <MessagePanel />
                   </div>

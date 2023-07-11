@@ -9,9 +9,12 @@ import UserListLoading from "./loading";
 
 const UserList = () => {
   return (
-    <ul className=" w-full overflow-x-hidden overflow-y-auto divide-y-[0px]">
-      <Content />
-    </ul>
+    <div className=" flex flex-col overflow-x-hidden">
+      <h1 className=" text-lg font-semibold py-4 px-6">Users</h1>
+      <ul className=" flex-1 overflow-x-hidden overflow-y-auto w-full divide-y-[0px]">
+        <Content />
+      </ul>
+    </div>
   );
 };
 
@@ -61,7 +64,7 @@ const Content = () => {
               (item.user._id === selectedUser?.user._id
                 ? " bg-gray-200"
                 : " hover:bg-gray-100") +
-              " relative p-4 group cursor-pointer transition-colors rounded-lg"
+              " mx-4 relative p-4 group cursor-pointer transition-colors rounded-lg"
             }
             onClick={() => handleClick(item, index)}
           >
