@@ -15,45 +15,40 @@ export const nextAuthOptions: NextAuthOptions = {
       name: "Google",
       clientId: process.env.GOOGLE_CLIENT_ID || "",
       clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
+      profile: async (profile: any) => {
+        await upsertProfile({
+          email: profile.email,
+          name: profile.name,
+          picture: profile.picture,
+        });
+
+        return { ...profile, id: profile.sub };
+      },
     }),
     FacebookCredentialsProvider({
       name: "Facebook",
       clientId: process.env.FACEBOOK_CLIENT_ID || "",
       clientSecret: process.env.FACEBOOK_CLIENT_SECRET || "",
+      profile: async (profile: any) => {
+        await upsertProfile({
+          email: profile.email,
+          name: profile.name,
+          picture: profile.picture.data.url,
+        });
+
+        return profile;
+      },
     }),
   ],
   jwt: {
     encode: async ({ secret, token, maxAge }) => {
       if (!token) return "";
 
-      const mongoClient = await clientPromise;
+      const profile = await getProfile(token.email);
 
-      let existingUser = await mongoClient
-        .db(process.env.DATABASE_NAME)
-        .collection(COLLECTIONS_USERS)
-        .findOne({
-          email: token.email,
-        });
+      if (!profile) return "";
 
-      if (!existingUser) {
-        const insertResult = await mongoClient
-          .db(process.env.DATABASE_NAME)
-          .collection(COLLECTIONS_USERS)
-          .insertOne({
-            email: token.email,
-            name: token.name,
-            image: token.picture,
-          });
-
-        if (!insertResult.acknowledged || !insertResult.insertedId) return "";
-
-        existingUser = await mongoClient
-          .db(process.env.DATABASE_NAME)
-          .collection(COLLECTIONS_USERS)
-          .findOne({ _id: new ObjectId(insertResult.insertedId) });
-      }
-
-      const salt = jwt.sign({ ...existingUser }, secret, { expiresIn: maxAge });
+      const salt = jwt.sign({ ...profile }, secret, { expiresIn: maxAge });
 
       return salt;
     },
@@ -78,3 +73,43 @@ export const nextAuthOptions: NextAuthOptions = {
     signIn: "/login",
   },
 };
+
+const upsertProfile = async (profile: {
+  email: any;
+  name: any;
+  picture: any;
+}) => {
+  const mongoClient = await clientPromise;
+
+  const existingProfile = await getProfile(profile.email);
+
+  if (existingProfile) return existingProfile;
+
+  const insertResult = await mongoClient
+    .db(process.env.DATABASE_NAME)
+    .collection(COLLECTIONS_USERS)
+    .insertOne({
+      email: profile.email,
+      name: profile.name,
+      image: profile.picture,
+    });
+
+  if (!insertResult.acknowledged || !insertResult.insertedId) return null;
+
+  return await getProfile(profile.email);
+};
+
+async function getProfile(email: any) {
+  const mongoClient = await clientPromise;
+
+  const existingUser = await mongoClient
+    .db(process.env.DATABASE_NAME)
+    .collection(COLLECTIONS_USERS)
+    .findOne({
+      email,
+    });
+
+  if (existingUser) return existingUser;
+
+  return null;
+}
