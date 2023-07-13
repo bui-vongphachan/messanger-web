@@ -13,7 +13,7 @@ const MessageList = () => {
   const { data } = queryResult!;
 
   return (
-    <section className="flex flex-col overflow-hidden flex-1">
+    <div className="flex-1 flex flex-col overflow-hidden">
       {/* Message List */}
       <AutoScroll
         showOption={false}
@@ -41,7 +41,7 @@ const MessageList = () => {
           );
         })}
       </AutoScroll>
-    </section>
+    </div>
   );
 };
 

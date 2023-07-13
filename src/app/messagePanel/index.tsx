@@ -6,6 +6,7 @@ import Footer from "./footer";
 import MessageList from "./messageList";
 import ChatAnimation from "./30464-coda-chaters.json";
 import classes from "classnames";
+import Header from "./header";
 
 const MessagePanel = () => {
   const { selectedUser, getUserQueryResult, selectedUserIndex } =
@@ -23,7 +24,7 @@ const MessagePanel = () => {
 
   if (!selectedUser) {
     return (
-      <section className=" hidden sm:block flex-1 bg-gray-100">
+      <section className=" hidden md:block flex-1 bg-gray-100">
         <div className=" flex flex-col justify-center items-center h-full">
           <div className=" w-96">
             <Player autoplay loop src={ChatAnimation} />
@@ -39,13 +40,14 @@ const MessagePanel = () => {
       // className=" hidden md:flex flex-col flex-1 bg-gray-100"
       // className=" "
       className={classes(
-        `absolute w-full h-full md:relative md:flex flex-col flex-1 bg-gray-100`,
+        `absolute w-full h-full md:relative flex flex-col flex-1 bg-gray-200`,
         {
           hidden: !selectedUser,
         }
       )}
       onClick={readMessages}
     >
+      <Header />
       <MessageList />
       <Footer />
     </section>

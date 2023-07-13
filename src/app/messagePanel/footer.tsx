@@ -60,7 +60,7 @@ const Footer = () => {
   });
 
   return (
-    <footer className="bg-gray-50">
+    <footer className="bg-gray-100">
       <form
         onSubmit={(event) => {
           event.preventDefault();

@@ -26,7 +26,7 @@ export default function Home() {
                   {/* Main container */}
                   <div className="rounded-lg overflow-hidden shadow-md relative w-full flex m-auto container h-[calc(100vh-96px)]">
                     {/* Conversation Panel */}
-                    <aside className=" bg-white flex-1 w-full sm:w-fit sm:max-w-[30%] sm:min-w-[300px] flex flex-col">
+                    <aside className=" bg-white flex-1 w-full md:w-fit md:max-w-[30%] md:min-w-[300px] flex flex-col">
                       {/* Conversation Container */}
 
                       <UserList />
