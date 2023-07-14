@@ -42,7 +42,7 @@ const Content = () => {
 
       if (item.latestMessage.isRead) return;
 
-      /*  removeUnreadIndecator(getUserQueryResult, index); */
+      removeUnreadIndecator(getUserQueryResult, index);
     },
     [getUserQueryResult, setSelectedUser, setSelectedUserIndex]
   );
