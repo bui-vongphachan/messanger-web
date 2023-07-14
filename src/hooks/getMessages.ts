@@ -11,10 +11,6 @@ export interface GetMessageVariables extends AnyData {
   partnerId: string;
 }
 
-interface SubscriptionVariables extends AnyData {
-  userId: string;
-}
-
 export const useGetMessages = (props: GetMessageVariables) => {
   return useQuery<GetMessageQueryResponse, GetMessageVariables>(
     GET_MESSAGE_QUERY_STRING,
@@ -37,8 +33,8 @@ export const GET_MESSAGE_QUERY_STRING = gql`
 `;
 
 const subscriptionString = gql`
-  subscription Subscription($userId: ID) {
-    newMessageSubscriber(userId: $userId) {
+  subscription Subscription($userId: ID, $partnerId: ID) {
+    newMessageSubscriber(userId: $userId, partnerId: $partnerId) {
       _id
       content
       senderId
@@ -49,10 +45,10 @@ const subscriptionString = gql`
 `;
 
 export const getNewMessageSubscribeOptions = (
-  props: SubscriptionVariables
+  props: GetMessageVariables
 ): SubscribeToMoreOptions<
   GetMessageQueryResponse,
-  SubscriptionVariables,
+  GetMessageVariables,
   { newMessageSubscriber: Message }
 > => {
   return {
