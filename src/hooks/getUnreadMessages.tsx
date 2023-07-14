@@ -50,28 +50,32 @@ export const GetUnreadMessage = (
 
       if (!data.data.data) return;
 
-      const { user, latestMessage } = data.data.data.unreadConversation;
+      const unreadConversation = data.data.data.unreadConversation;
 
       updateQuery((prev) => {
         const index = prev.getUsers.findIndex(
-          (item) => item.user._id === user._id
+          (item) => item.user._id === unreadConversation.user._id
         );
 
-        if (index === -1) return prev;
+        if (index === -1) {
+          return {
+            getUsers: prev.getUsers.unshift(unreadConversation),
+          };
+        }
 
         const prevItem = prev.getUsers[index];
 
         const newItem = {
           ...prevItem,
-          latestMessage,
+          latestMessage: unreadConversation.latestMessage,
         };
 
-        const newUsers = [...prev.getUsers];
+        const newUsers = prev.getUsers.filter((_, _index) => _index !== index);
 
-        newUsers[index] = newItem;
+        newUsers.unshift(newItem);
 
         return {
-          getUsers: newUsers,
+          getUsers: newUsers as any,
         };
       });
     },
