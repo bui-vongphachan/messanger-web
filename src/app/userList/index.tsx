@@ -9,9 +9,12 @@ import UserListLoading from "./loading";
 
 const UserList = () => {
   return (
-    <ul className=" w-full overflow-x-hidden overflow-y-auto divide-y-[0px] divide-blue-800">
-      <Content />
-    </ul>
+    <div className=" flex flex-col overflow-x-hidden">
+      <h1 className=" text-lg font-semibold py-4 px-6">Users</h1>
+      <ul className=" flex-1 overflow-x-hidden overflow-y-auto w-full divide-y-[0px]">
+        <Content />
+      </ul>
+    </div>
   );
 };
 
@@ -39,7 +42,7 @@ const Content = () => {
 
       if (item.latestMessage.isRead) return;
 
-      /*  removeUnreadIndecator(getUserQueryResult, index); */
+      removeUnreadIndecator(getUserQueryResult, index);
     },
     [getUserQueryResult, setSelectedUser, setSelectedUserIndex]
   );
@@ -59,9 +62,9 @@ const Content = () => {
             key={index}
             className={
               (item.user._id === selectedUser?.user._id
-                ? " bg-blue-800 hover:bg-blue-700 text-white"
-                : " hover:bg-blue-900") +
-              " relative p-4 group cursor-pointer transition-colors rounded-lg"
+                ? " bg-gray-200"
+                : " hover:bg-gray-100") +
+              " mx-4 relative p-4 group cursor-pointer transition-colors rounded-lg"
             }
             onClick={() => handleClick(item, index)}
           >
@@ -75,7 +78,7 @@ const Content = () => {
               />
               <div className="w-[calc(100%-66px)] relative flex flex-col gap-2">
                 <div className="flex justify-between items-center relativ pr-8">
-                  <h5 className=" w-[100%] text-sm font-normal text-ellipsis overflow-hidden whitespace-nowrap">
+                  <h5 className=" text-gray-900 group-hover:text-gray-950 font-medium w-[100%] text-sm text-ellipsis overflow-hidden whitespace-nowrap">
                     {item.user.name}
                   </h5>
                   <div
@@ -97,7 +100,7 @@ const Content = () => {
                 </div>
                 <div className="flex">
                   <div className="flex flex-1 items-center gap-2 w-[calc(100%-20px)]">
-                    <p className=" text-xs text-ellipsis overflow-hidden whitespace-nowrap">
+                    <p className="text-gray-500 group-hover:text-gray-700  text-xs text-ellipsis overflow-hidden whitespace-nowrap">
                       {item.latestMessage?.content}
                     </p>
                   </div>

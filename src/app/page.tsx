@@ -21,20 +21,15 @@ export default function Home() {
           <UserContextProvider>
             <MessageContextProvider>
               <BackgroundMessageContextProvider>
-                <main>
+                <main className="px-4 box-border">
                   <Navbar />
                   {/* Main container */}
-                  <div className=" text-blue-200 bg-blue-950 rounded-lg overflow-hidden shadow-md w-screen flex m-auto container h-[calc(100vh-96px)]">
+                  <div className="rounded-lg overflow-hidden shadow-md relative w-full flex m-auto container h-[calc(100vh-96px)]">
                     {/* Conversation Panel */}
-                    <aside className=" w-fit max-w-[30%] min-w-[300px] flex flex-col">
+                    <aside className=" bg-white flex-1 w-full md:w-fit md:max-w-[30%] md:min-w-[300px] flex flex-col">
                       {/* Conversation Container */}
-                      <div className=" flex flex-col flex-1 overflow-hidden">
-                        {/* Search Box */}
-                        <section className=" p-4 flex flex-col gap-2">
-                          <h1 className=" text-lg font-semibold">Users</h1>
-                          <UserList />
-                        </section>
-                      </div>
+
+                      <UserList />
                     </aside>
                     <MessagePanel />
                   </div>

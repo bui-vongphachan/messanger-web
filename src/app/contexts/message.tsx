@@ -28,18 +28,17 @@ export const MessageContextProvider = (props: {
   });
 
   useEffect(() => {
-    if (!queryResult.called) return;
-
     const unsubscriber = queryResult.subscribeToMore(
       getNewMessageSubscribeOptions({
         userId: user?._id!,
+        partnerId: selectedUser?.user._id!,
       })
     );
 
     return () => {
       unsubscriber();
     };
-  }, [queryResult, user]);
+  }, [queryResult, user, selectedUser]);
 
   return (
     <MessageContext.Provider value={{ queryResult }}>

@@ -1,0 +1,40 @@
+.i {
+  position: relative;
+}
+
+.i:before,
+.i:after {
+  content: "";
+  width: 15px;
+  height: 15px;
+  display: block;
+  position: relative;
+  margin: 10px auto;
+  border-radius: 50%;
+  animation: left 1s infinite ease-in-out;
+  @apply bg-white
+}
+.i:after {
+  animation: right 1s infinite ease-in-out;
+  @apply bg-sky-500;
+}
+
+@keyframes right {
+  0%,
+  100% {
+    transform: translate(-15px);
+  }
+  50% {
+    transform: translate(15px);
+  }
+}
+
+@keyframes left {
+  0%,
+  100% {
+    transform: translate(15px);
+  }
+  50% {
+    transform: translate(-15px);
+  }
+}

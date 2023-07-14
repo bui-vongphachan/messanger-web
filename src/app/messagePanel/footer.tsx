@@ -60,7 +60,7 @@ const Footer = () => {
   });
 
   return (
-    <footer className="bg-blue-800">
+    <footer className="bg-gray-100">
       <form
         onSubmit={(event) => {
           event.preventDefault();
@@ -71,7 +71,7 @@ const Footer = () => {
         <div className=" rounded-3xl w-full overflow-hidden">
           <input
             ref={inputRef}
-            className=" text-sm w-full h-12 px-4 outline-none"
+            className=" transition-colors bg-gray-200 text-sm w-full h-12 px-4 outline-none"
             onChange={(event) => setContent(event.target.value)}
             disabled={loading || !!error}
             value={content}
@@ -79,7 +79,7 @@ const Footer = () => {
         </div>
         <button
           type="submit"
-          className=" bg-blue-700 hover:bg-blue-900 transition-colors px-2 rounded-full shrink-0 w-[48px] h-[48px] flex justify-center items-center"
+          className=" bg-gray-400 hover:bg-gray-600 transition-colors px-2 rounded-full shrink-0 w-[48px] h-[48px] flex justify-center items-center"
           disabled={loading || !!error}
           onClick={() => send()}
         >

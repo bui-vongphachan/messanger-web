@@ -1,8 +1,12 @@
 import { removeUnreadIndecator } from "@/utils";
+import { Player } from "@lottiefiles/react-lottie-player";
 import { useCallback, useContext } from "react";
 import { UserContext } from "../contexts";
 import Footer from "./footer";
 import MessageList from "./messageList";
+import ChatAnimation from "./30464-coda-chaters.json";
+import classes from "classnames";
+import Header from "./header";
 
 const MessagePanel = () => {
   const { selectedUser, getUserQueryResult, selectedUserIndex } =
@@ -20,17 +24,30 @@ const MessagePanel = () => {
 
   if (!selectedUser) {
     return (
-      <section className="flex flex-col flex-1 justify-center items-center">
-        <h1 className=" text-lg font-semibold">Select a user</h1>
+      <section className=" hidden md:block flex-1 bg-gray-100">
+        <div className=" flex flex-col justify-center items-center h-full">
+          <div className=" w-96">
+            <Player autoplay loop src={ChatAnimation} />
+          </div>
+          <h1 className=" text-lg font-semibold">Break the ice, say hello!</h1>
+        </div>
       </section>
     );
   }
 
   return (
     <section
-      className="flex flex-col flex-1 bg-blue-900 text-black"
+      // className=" hidden md:flex flex-col flex-1 bg-gray-100"
+      // className=" "
+      className={classes(
+        `absolute w-full h-full md:relative flex flex-col flex-1 bg-gray-200`,
+        {
+          hidden: !selectedUser,
+        }
+      )}
       onClick={readMessages}
     >
+      <Header />
       <MessageList />
       <Footer />
     </section>
