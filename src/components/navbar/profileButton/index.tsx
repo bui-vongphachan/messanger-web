@@ -17,7 +17,7 @@ const ProfileButton = () => {
           onClick={() => setIsOpen(!isOpen)}
         >
           <span className="sr-only">Open user menu</span>
-          <div className="h-8 w-8">
+          <div className="h-8 w-8 relative">
             <ProfileImage />
           </div>
         </button>
