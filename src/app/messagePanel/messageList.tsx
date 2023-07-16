@@ -15,8 +15,11 @@ const MessageList = () => {
   const { data } = queryResult!;
 
   return (
-    <div className="flex-1 flex flex-col overflow-hidden">
-      <BottomScroller resetDependancy={selectedUser}>
+    <div className="flex-1 flex flex-col overflow-hidden relative">
+      <BottomScroller
+        resetDependancy={selectedUser}
+        onTopReached={() => console.log(" reached top")}
+      >
         {data?.getMessages.map((message, index) => {
           const type = message.senderId === user?._id ? "out" : "in";
 
