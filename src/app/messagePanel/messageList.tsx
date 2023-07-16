@@ -2,11 +2,13 @@
 
 import { AuthenticationGateContext } from "@/components/authenticationGate";
 import { useContext } from "react";
-import { MessageContext } from "../contexts";
+import { MessageContext, UserContext } from "../contexts";
 import BottomScroller from "@/components/bottomScroller";
 
 const MessageList = () => {
   const { queryResult } = useContext(MessageContext);
+
+  const { selectedUser } = useContext(UserContext);
 
   const { user } = useContext(AuthenticationGateContext);
 
@@ -14,7 +16,7 @@ const MessageList = () => {
 
   return (
     <div className="flex-1 flex flex-col overflow-hidden">
-      <BottomScroller>
+      <BottomScroller resetDependancy={selectedUser}>
         {data?.getMessages.map((message, index) => {
           const type = message.senderId === user?._id ? "out" : "in";
 

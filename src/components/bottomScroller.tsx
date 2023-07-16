@@ -2,9 +2,10 @@
 
 import { useEffect, useRef, useState } from "react";
 
-const BottomScroller = (Props: {
+const BottomScroller = (props: {
   children: React.ReactNode;
   className?: string;
+  resetDependancy?: any;
 }) => {
   const [isAtBottom, setIsAtBottom] = useState(true);
 
@@ -45,12 +46,18 @@ const BottomScroller = (Props: {
     div.scrollTop = div.scrollHeight;
   });
 
+  useEffect(() => {
+    if (!props.resetDependancy) return;
+
+    setIsAtBottom(true);
+  }, [props.resetDependancy]);
+
   return (
     <div
       ref={divRef}
       className="flex flex-1 flex-col overflow-y-auto overflow-x-hidden py-4"
     >
-      {Props.children}
+      {props.children}
       <div ref={buttomRef} id="bottom" className=" hidden">
         bottom
       </div>
