@@ -38,7 +38,10 @@ const Footer = () => {
         if (!sendMessage) return prev;
 
         return {
-          getMessages: [...prev.getMessages, sendMessage],
+          getMessages: {
+            isEndOfConversation: prev.getMessages.isEndOfConversation,
+            messages: [...prev.getMessages.messages, sendMessage],
+          },
         };
       });
     },

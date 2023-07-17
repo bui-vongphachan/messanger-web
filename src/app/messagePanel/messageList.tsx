@@ -13,26 +13,45 @@ const MessageList = () => {
 
   const { user } = useContext(AuthenticationGateContext);
 
-  // const [getPreviousMessage, previousMessageResult] =
-  //   useGetPreviousMessageQuery({});
+  const [getPreviousMessage, { loading: gettingPreviousMessage }] =
+    useGetPreviousMessageQuery({});
 
-  // const getPreviousMessageCaller = useCallback(async () => {
-  //   if (!queryResult) return;
+  const getPreviousMessageCaller = useCallback(async () => {
+    if (gettingPreviousMessage) return;
 
-  //   if (!queryResult.data) return;
+    if (!queryResult) return;
 
-  //   if (!queryResult.data.getMessages) return;
+    if (!queryResult.data) return;
 
-  //   if (!queryResult.data.getMessages.messages) return;
+    if (!queryResult.data.getMessages) return;
 
-  //   console.log();
+    if (queryResult.data.getMessages.isEndOfConversation) return;
 
-  //   /*    await getPreviousMessage({
-  //     variables: {
-  //       currentMessageId: queryResult.data.getMessages[0]._id,
-  //     },
-  //   }); */
-  // }, [queryResult]);
+    if (!queryResult.data.getMessages.messages) return;
+
+    const { data: previousMessageData } = await getPreviousMessage({
+      variables: {
+        currentMessageId: queryResult.data.getMessages.messages[0]._id,
+      },
+    });
+
+    if (!previousMessageData) return;
+
+    queryResult.updateQuery((prev) => {
+      const newMessages = [
+        ...previousMessageData.getPreviousMessages.messages,
+        ...prev.getMessages.messages,
+      ];
+
+      return {
+        getMessages: {
+          isEndOfConversation:
+            previousMessageData.getPreviousMessages.isEndOfConversation,
+          messages: newMessages,
+        },
+      };
+    });
+  }, [getPreviousMessage, queryResult, gettingPreviousMessage]);
 
   const { data } = queryResult!;
 
@@ -40,7 +59,7 @@ const MessageList = () => {
     <div className="flex-1 flex flex-col justify-end overflow-hidden relative">
       <BottomScroller
         resetDependancy={selectedUser}
-        // onTopReached={getPreviousMessageCaller}
+        onTopReached={getPreviousMessageCaller}
       >
         {data?.getMessages.messages.map((message, index) => {
           const type = message.senderId === user?._id ? "out" : "in";
