@@ -14,7 +14,7 @@ export interface SendMessageVariables extends AnyData {
 }
 
 export const SEND_MESSAGE_QUERY_STRING = gql`
-  mutation SendMessage($senderId: ID, $recipientId: ID, $content: String) {
+  mutation SendMessage($senderId: ID!, $recipientId: ID!, $content: String!) {
     sendMessage(
       senderId: $senderId
       recipientId: $recipientId
@@ -26,6 +26,7 @@ export const SEND_MESSAGE_QUERY_STRING = gql`
       recipientId
       sentDate
       isRead
+      previousMessageId
     }
   }
 `;

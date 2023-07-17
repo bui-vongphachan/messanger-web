@@ -1,8 +1,11 @@
+import { ObjectId } from "mongodb";
+
 export interface Message {
   _id: string;
-  conversationId: string;
   content: string;
-  senderId: string;
-  sentDate: string;
+  senderId: string | ObjectId;
+  recipientId: string | ObjectId;
+  previousMessageId: string | ObjectId | null;
+  sentDate: Date;
   isRead: boolean;
 }
