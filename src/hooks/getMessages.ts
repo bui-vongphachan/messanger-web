@@ -27,7 +27,9 @@ export const GET_MESSAGE_QUERY_STRING = gql`
       content
       senderId
       recipientId
+      previousMessageId
       sentDate
+      isRead
     }
   }
 `;
