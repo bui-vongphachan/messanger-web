@@ -1,9 +1,10 @@
 "use client";
 
 import { AuthenticationGateContext } from "@/components/authenticationGate";
-import { useContext } from "react";
+import { useCallback, useContext } from "react";
 import { MessageContext, UserContext } from "../contexts";
 import BottomScroller from "@/components/bottomScroller";
+import { useGetPreviousMessageQuery } from "@/hooks";
 
 const MessageList = () => {
   const { queryResult } = useContext(MessageContext);
@@ -12,15 +13,36 @@ const MessageList = () => {
 
   const { user } = useContext(AuthenticationGateContext);
 
+  // const [getPreviousMessage, previousMessageResult] =
+  //   useGetPreviousMessageQuery({});
+
+  // const getPreviousMessageCaller = useCallback(async () => {
+  //   if (!queryResult) return;
+
+  //   if (!queryResult.data) return;
+
+  //   if (!queryResult.data.getMessages) return;
+
+  //   if (!queryResult.data.getMessages.messages) return;
+
+  //   console.log();
+
+  //   /*    await getPreviousMessage({
+  //     variables: {
+  //       currentMessageId: queryResult.data.getMessages[0]._id,
+  //     },
+  //   }); */
+  // }, [queryResult]);
+
   const { data } = queryResult!;
 
   return (
-    <div className="flex-1 flex flex-col overflow-hidden relative">
+    <div className="flex-1 flex flex-col justify-end overflow-hidden relative">
       <BottomScroller
         resetDependancy={selectedUser}
-        onTopReached={() => console.log(" reached top")}
+        // onTopReached={getPreviousMessageCaller}
       >
-        {data?.getMessages.map((message, index) => {
+        {data?.getMessages.messages.map((message, index) => {
           const type = message.senderId === user?._id ? "out" : "in";
 
           const currentDate = new Date(message.sentDate);

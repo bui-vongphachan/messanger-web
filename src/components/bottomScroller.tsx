@@ -72,7 +72,6 @@ const BottomScroller = (props: {
     setIsAtBottom(true);
   }, [props.resetDependancy]);
 
-
   /* ------------------------------------------------------------------------------------------------------------------ */
   /*                      for triggering an event when the user reaches the top of the list                     */
   /* ------------------------------------------------------------------------------------------------------------------ */
@@ -101,8 +100,9 @@ const BottomScroller = (props: {
 
   return (
     <div
+      id="bottom-scroller"
       ref={divRef}
-      className="flex flex-1 flex-col overflow-y-auto overflow-x-hidden py-4"
+      className="flex flex-col overflow-y-auto overflow-x-hidden py-4"
     >
       <div ref={topRef} id="top" className=" relative">
         <div className=" absolute w-full h-[2 00px] bg-red-500" />
