@@ -22,12 +22,14 @@ export const MessageContextProvider = (props: {
 
   const { selectedUser } = useContext(UserContext);
 
-  const queryResult = useGetMessages({
+  const [getMessages, queryResult] = useGetMessages({
     userId: user?._id!,
     partnerId: selectedUser?.user._id!,
   });
 
   useEffect(() => {
+    if (!queryResult.called) return;
+
     const unsubscriber = queryResult.subscribeToMore(
       getNewMessageSubscribeOptions({
         userId: user?._id!,
@@ -39,6 +41,16 @@ export const MessageContextProvider = (props: {
       unsubscriber();
     };
   }, [queryResult, user, selectedUser]);
+
+  useEffect(() => {
+    if (!selectedUser) return;
+
+    if (!user) return;
+
+    if (queryResult?.called) return;
+
+    getMessages();
+  }, [selectedUser, user, getMessages, queryResult]);
 
   return (
     <MessageContext.Provider value={{ queryResult }}>

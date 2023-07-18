@@ -37,8 +37,6 @@ const MessagePanel = () => {
 
   return (
     <section
-      // className=" hidden md:flex flex-col flex-1 bg-gray-100"
-      // className=" "
       className={classes(
         `absolute w-full h-full md:relative flex flex-col flex-1 bg-gray-200`,
         {

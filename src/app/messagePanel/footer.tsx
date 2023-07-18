@@ -37,17 +37,29 @@ const Footer = () => {
       queryResult?.updateQuery((prev) => {
         if (!sendMessage) return prev;
 
+        let newMessagesList = [...prev.getMessages.messages];
+
+        newMessagesList.unshift(sendMessage);
+
         return {
-          getMessages: [...prev.getMessages, sendMessage],
+          getMessages: {
+            isEndOfConversation: prev.getMessages.isEndOfConversation,
+            messages: newMessagesList,
+          },
         };
       });
     },
   });
 
   const send = useCallback(() => {
+    if (!content) return;
+
+    if (content.replaceAll(" ", "").length === 0) return;
+
     sendMessage();
+
     setContent("");
-  }, [sendMessage]);
+  }, [sendMessage, content]);
 
   useEffect(() => {
     const ref = inputRef.current;

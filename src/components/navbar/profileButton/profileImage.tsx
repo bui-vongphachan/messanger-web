@@ -1,7 +1,6 @@
 "use client";
 
 import { AuthenticationGateContext } from "@/components/authenticationGate";
-import { SessionContext } from "next-auth/react";
 import Image from "next/image";
 import { useContext } from "react";
 

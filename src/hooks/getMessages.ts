@@ -1,9 +1,9 @@
 import { AnyData, Message } from "@/types";
-import { SubscribeToMoreOptions, useQuery } from "@apollo/client";
+import { SubscribeToMoreOptions, useLazyQuery } from "@apollo/client";
 import { gql } from "@apollo/client";
 
 export interface GetMessageQueryResponse {
-  getMessages: Message[];
+  getMessages: { isEndOfConversation: boolean; messages: Message[] };
 }
 
 export interface GetMessageVariables extends AnyData {
@@ -12,7 +12,7 @@ export interface GetMessageVariables extends AnyData {
 }
 
 export const useGetMessages = (props: GetMessageVariables) => {
-  return useQuery<GetMessageQueryResponse, GetMessageVariables>(
+  return useLazyQuery<GetMessageQueryResponse, GetMessageVariables>(
     GET_MESSAGE_QUERY_STRING,
     {
       variables: props,
@@ -23,11 +23,16 @@ export const useGetMessages = (props: GetMessageVariables) => {
 export const GET_MESSAGE_QUERY_STRING = gql`
   query GetMessages($userId: ID, $partnerId: ID) {
     getMessages(userId: $userId, partnerId: $partnerId) {
-      _id
-      content
-      senderId
-      recipientId
-      sentDate
+      isEndOfConversation
+      messages {
+        _id
+        content
+        senderId
+        recipientId
+        previousMessageId
+        sentDate
+        isRead
+      }
     }
   }
 `;
@@ -55,14 +60,17 @@ export const getNewMessageSubscribeOptions = (
     document: subscriptionString,
     variables: props,
     updateQuery: (prev, { subscriptionData }) => {
-      const newDataSet = [...prev.getMessages];
+      const newDataSet = [...prev.getMessages.messages];
 
       const newItem = subscriptionData.data.newMessageSubscriber;
 
       if (newItem) newDataSet.push(newItem);
 
       return {
-        getMessages: newDataSet,
+        getMessages: {
+          ...prev.getMessages,
+          messages: newDataSet,
+        },
       };
     },
   };

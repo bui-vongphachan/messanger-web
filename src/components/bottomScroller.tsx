@@ -1,65 +1,53 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 const BottomScroller = (props: {
   children: React.ReactNode;
   className?: string;
   resetDependancy?: any;
+  onTopReached?: () => void;
 }) => {
-  const [isAtBottom, setIsAtBottom] = useState(true);
+  const { onTopReached } = props;
 
   const divRef = useRef<HTMLDivElement>(null);
-  const buttomRef = useRef<HTMLDivElement>(null);
+  const topRef = useRef<HTMLDivElement>(null);
 
-  const checkScroll = () => {
-    const div = divRef.current;
-
-    if (!div) return;
-
-    if (div.scrollTop + div.clientHeight >= div.scrollHeight) {
-      return setIsAtBottom(true);
-    }
-
-    setIsAtBottom(false);
-  };
+  /* ------------------------------------------------------------------------------------------------------------------ */
+  /*                      for triggering an event when the user reaches the top of the list                     */
+  /* ------------------------------------------------------------------------------------------------------------------ */
 
   useEffect(() => {
-    const div = divRef.current;
+    if (!onTopReached) return;
 
-    if (!div) return;
+    if (!topRef.current) return;
 
-    div.addEventListener("scroll", checkScroll);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const target = entries[0];
+        if (target.isIntersecting) {
+          if (onTopReached) onTopReached();
+        }
+      },
+      { threshold: 1 }
+    );
+
+    observer.observe(topRef.current);
 
     return () => {
-      div.removeEventListener("scroll", checkScroll);
+      observer.disconnect();
     };
-  }, []);
-
-  useEffect(() => {
-    const div = divRef.current;
-
-    if (!div) return;
-
-    if (!isAtBottom) return;
-
-    div.scrollTop = div.scrollHeight;
-  });
-
-  useEffect(() => {
-    if (!props.resetDependancy) return;
-
-    setIsAtBottom(true);
-  }, [props.resetDependancy]);
+  }, [onTopReached]);
 
   return (
     <div
+      id="bottom-scroller"
       ref={divRef}
-      className="flex flex-1 flex-col overflow-y-auto overflow-x-hidden py-4"
+      className="flex flex-col-reverse gap-2 overflow-y-auto overflow-x-hidden py-4"
     >
       {props.children}
-      <div ref={buttomRef} id="bottom" className=" hidden">
-        bottom
+      <div ref={topRef} id="top" className=" relative">
+        <div className=" absolute w-full h-[2 00px] bg-red-500" />
       </div>
     </div>
   );
