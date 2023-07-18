@@ -27,11 +27,16 @@ const MessageList = () => {
 
     if (queryResult.data.getMessages.isEndOfConversation) return;
 
+    if (queryResult.data.getMessages.isEndOfConversation) return;
+
     if (!queryResult.data.getMessages.messages) return;
 
     const { data: previousMessageData } = await getPreviousMessage({
       variables: {
-        currentMessageId: queryResult.data.getMessages.messages[0]._id,
+        currentMessageId:
+          queryResult.data.getMessages.messages[
+            queryResult.data.getMessages.messages.length - 1
+          ]._id,
       },
     });
 
@@ -39,8 +44,8 @@ const MessageList = () => {
 
     queryResult.updateQuery((prev) => {
       const newMessages = [
-        ...previousMessageData.getPreviousMessages.messages,
         ...prev.getMessages.messages,
+        ...previousMessageData.getPreviousMessages.messages,
       ];
 
       return {
