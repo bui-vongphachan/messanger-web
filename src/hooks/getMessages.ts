@@ -1,5 +1,5 @@
 import { AnyData, Message } from "@/types";
-import { SubscribeToMoreOptions, useQuery } from "@apollo/client";
+import { SubscribeToMoreOptions, useLazyQuery } from "@apollo/client";
 import { gql } from "@apollo/client";
 
 export interface GetMessageQueryResponse {
@@ -12,7 +12,7 @@ export interface GetMessageVariables extends AnyData {
 }
 
 export const useGetMessages = (props: GetMessageVariables) => {
-  return useQuery<GetMessageQueryResponse, GetMessageVariables>(
+  return useLazyQuery<GetMessageQueryResponse, GetMessageVariables>(
     GET_MESSAGE_QUERY_STRING,
     {
       variables: props,
