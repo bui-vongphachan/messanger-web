@@ -43,7 +43,7 @@ const BottomScroller = (props: {
     <div
       id="bottom-scroller"
       ref={divRef}
-      className="flex flex-col-reverse overflow-y-auto overflow-x-hidden py-4"
+      className="flex flex-col-reverse gap-2 overflow-y-auto overflow-x-hidden py-4"
     >
       {props.children}
       <div ref={topRef} id="top" className=" relative">
