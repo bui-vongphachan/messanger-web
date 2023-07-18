@@ -20,47 +20,47 @@ const BottomScroller = (props: {
   /*                   make the scroll follows the bottom of the list unless the user is scrolling up                   */
   /* ------------------------------------------------------------------------------------------------------------------ */
 
-  const checkScroll = () => {
-    const div = divRef.current;
+  // const checkScroll = () => {
+  //   const div = divRef.current;
 
-    if (!div) return;
+  //   if (!div) return;
 
-    if (div.scrollTop + div.clientHeight >= div.scrollHeight) {
-      return setIsAtBottom(true);
-    }
+  //   if (div.scrollTop + div.clientHeight >= div.scrollHeight) {
+  //     return setIsAtBottom(true);
+  //   }
 
-    setIsAtBottom(false);
-  };
+  //   setIsAtBottom(false);
+  // };
 
   /* ------------------------------------------------------------------------------------------------------------------ */
   /*                        for tracking the scroll movement and calling function when users did                        */
   /* ------------------------------------------------------------------------------------------------------------------ */
 
-  useEffect(() => {
-    const div = divRef.current;
+  // useEffect(() => {
+  //   const div = divRef.current;
 
-    if (!div) return;
+  //   if (!div) return;
 
-    div.addEventListener("scroll", checkScroll);
+  //   div.addEventListener("scroll", checkScroll);
 
-    return () => {
-      div.removeEventListener("scroll", checkScroll);
-    };
-  }, []);
+  //   return () => {
+  //     div.removeEventListener("scroll", checkScroll);
+  //   };
+  // }, []);
 
   /* ------------------------------------------------------------------------------------------------------------------ */
   /*                        for making the scroll go to the bottom when the component is mounted                        */
   /* ------------------------------------------------------------------------------------------------------------------ */
 
-  useEffect(() => {
-    const div = divRef.current;
+  // useEffect(() => {
+  //   const div = divRef.current;
 
-    if (!div) return;
+  //   if (!div) return;
 
-    if (!isAtBottom) return;
+  //   if (!isAtBottom) return;
 
-    div.scrollTop = div.scrollHeight;
-  });
+  //   div.scrollTop = div.scrollHeight;
+  // });
 
   /* ------------------------------------------------------------------------------------------------------------------ */
   /*                           for reposition the scroll to the bottom when dependacy changes                           */
@@ -102,14 +102,11 @@ const BottomScroller = (props: {
     <div
       id="bottom-scroller"
       ref={divRef}
-      className="flex flex-col overflow-y-auto overflow-x-hidden py-4"
+      className="flex flex-col-reverse overflow-y-auto overflow-x-hidden py-4"
     >
+      {props.children}
       <div ref={topRef} id="top" className=" relative">
         <div className=" absolute w-full h-[2 00px] bg-red-500" />
-      </div>
-      {props.children}
-      <div ref={buttomRef} id="bottom" className=" block">
-        bottom
       </div>
     </div>
   );
