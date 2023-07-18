@@ -48,9 +48,14 @@ const Footer = () => {
   });
 
   const send = useCallback(() => {
+    if (!content) return;
+
+    if (content.replaceAll(" ", "").length === 0) return;
+
     sendMessage();
+
     setContent("");
-  }, [sendMessage]);
+  }, [sendMessage, content]);
 
   useEffect(() => {
     const ref = inputRef.current;
