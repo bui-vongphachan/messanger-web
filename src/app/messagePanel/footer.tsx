@@ -37,10 +37,14 @@ const Footer = () => {
       queryResult?.updateQuery((prev) => {
         if (!sendMessage) return prev;
 
+        let newMessagesList = [...prev.getMessages.messages];
+
+        newMessagesList.unshift(sendMessage);
+
         return {
           getMessages: {
             isEndOfConversation: prev.getMessages.isEndOfConversation,
-            messages: [...prev.getMessages.messages, sendMessage],
+            messages: newMessagesList,
           },
         };
       });
