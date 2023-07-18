@@ -14,12 +14,12 @@ interface Variables extends AnyData {
 }
 
 export const useGetUsersQuery = (props: Variables) => {
-  return useQuery<GetUsersQueryResponse, Variables>(queryString, {
+  return useQuery<GetUsersQueryResponse, Variables>(GET_USERS_QUERY_STRING, {
     variables: props,
   });
 };
 
-const queryString = gql`
+const GET_USERS_QUERY_STRING = gql`
   query GetUsers($userId: String) {
     getUsers(userId: $userId) {
       latestMessage {

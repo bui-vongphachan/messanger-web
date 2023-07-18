@@ -15,9 +15,9 @@ import { useMutation } from "@apollo/client";
 const Footer = () => {
   const { user } = useContext(AuthenticationGateContext);
 
-  const { queryResult } = useContext(MessageContext);
+  const { queryResult: messageQueryResult } = useContext(MessageContext);
 
-  const { selectedUser } = useContext(UserContext);
+  const { selectedUser, getUserQueryResult } = useContext(UserContext);
 
   const [content, setContent] = useState("");
 
@@ -34,7 +34,7 @@ const Footer = () => {
     },
     onCompleted: (data) => {
       const { sendMessage } = data;
-      queryResult?.updateQuery((prev) => {
+      messageQueryResult?.updateQuery((prev) => {
         if (!sendMessage) return prev;
 
         let newMessagesList = [...prev.getMessages.messages];
@@ -58,8 +58,36 @@ const Footer = () => {
 
     sendMessage();
 
+    getUserQueryResult?.updateQuery((prev) => {
+      const index = prev.getUsers.findIndex(
+        (item) => item.user._id === selectedUser?.user._id
+      );
+
+      if (index === -1) return prev;
+
+      const prevItem = prev.getUsers[index];
+
+      const newItem: any = {
+        ...prevItem,
+        latestMessage: {
+          ...prevItem.latestMessage,
+          content: content,
+          sentDate: new Date(),
+        },
+      };
+
+      const newUsers = prev.getUsers.filter((_, _index) => _index !== index);
+
+      newUsers.unshift(newItem);
+
+      return {
+        ...prev,
+        getUsers: newUsers as any,
+      };
+    });
+
     setContent("");
-  }, [sendMessage, content]);
+  }, [sendMessage, selectedUser, content, getUserQueryResult]);
 
   useEffect(() => {
     const ref = inputRef.current;
