@@ -22,6 +22,10 @@ export const BackgroundMessageContextProvider = (props: {
 
     if (!selectedUser) return;
 
+    if (!selectedUser.latestMessage) return;
+
+    if (selectedUser.latestMessage.isRead) return;
+
     readMessages();
 
     return () => {
