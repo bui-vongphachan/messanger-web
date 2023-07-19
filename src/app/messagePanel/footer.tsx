@@ -11,6 +11,10 @@ import { useContext, useRef, useState, useCallback, useEffect } from "react";
 import { UserContext, MessageContext } from "../contexts";
 import { AuthenticationGateContext } from "@/components/authenticationGate";
 import { useMutation } from "@apollo/client";
+import {
+  addNewMessageToConversation,
+  addNewMessageToCurrentChat,
+} from "@/utils";
 
 const Footer = () => {
   const { user } = useContext(AuthenticationGateContext);
@@ -27,67 +31,35 @@ const Footer = () => {
     SendMessageQueryResponse,
     SendMessageVariables
   >(SEND_MESSAGE_QUERY_STRING, {
-    variables: {
-      senderId: user ? user._id : "",
-      recipientId: selectedUser ? selectedUser.user._id : "",
-      content: content,
-    },
-    onCompleted: (data) => {
-      const { sendMessage } = data;
-      messageQueryResult?.updateQuery((prev) => {
-        if (!sendMessage) return prev;
-
-        let newMessagesList = [...prev.getMessages.messages];
-
-        newMessagesList.unshift(sendMessage);
-
-        return {
-          getMessages: {
-            isEndOfConversation: prev.getMessages.isEndOfConversation,
-            messages: newMessagesList,
-          },
-        };
-      });
-    },
+    onCompleted: (data) =>
+      addNewMessageToConversation({
+        queryResult: messageQueryResult,
+        message: data.sendMessage,
+      }),
   });
 
-  const send = useCallback(() => {
+  const send = useCallback(async () => {
     if (!content) return;
 
     if (content.replaceAll(" ", "").length === 0) return;
 
-    sendMessage();
+    await sendMessage({
+      variables: {
+        senderId: user ? user._id : "",
+        recipientId: selectedUser ? selectedUser.user._id : "",
+        content: content,
+      },
+    });
 
-    getUserQueryResult?.updateQuery((prev) => {
-      const index = prev.getUsers.findIndex(
-        (item) => item.user._id === selectedUser?.user._id
-      );
-
-      if (index === -1) return prev;
-
-      const prevItem = prev.getUsers[index];
-
-      const newItem: any = {
-        ...prevItem,
-        latestMessage: {
-          ...prevItem.latestMessage,
-          content: content,
-          sentDate: new Date(),
-        },
-      };
-
-      const newUsers = prev.getUsers.filter((_, _index) => _index !== index);
-
-      newUsers.unshift(newItem);
-
-      return {
-        ...prev,
-        getUsers: newUsers as any,
-      };
+    addNewMessageToCurrentChat({
+      queryResult: getUserQueryResult,
+      currentChat: selectedUser,
+      user: user,
+      newContent: content,
     });
 
     setContent("");
-  }, [sendMessage, selectedUser, content, getUserQueryResult]);
+  }, [sendMessage, selectedUser, content, user, getUserQueryResult]);
 
   useEffect(() => {
     const ref = inputRef.current;
