@@ -49,14 +49,16 @@ export const addNewMessageToCurrentChat = (props: {
       };
     }
 
-    const newUsers = moveCurrentChatToTopOfList({
+    moveCurrentChatToTopOfList({
       items: prev.getUsers,
       index,
       targetItem: currentChat,
     });
 
     return {
-      getUsers: newUsers as any,
+      getUsers: {
+        ...prev.getUsers,
+      },
     };
   });
 
