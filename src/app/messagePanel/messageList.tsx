@@ -76,9 +76,9 @@ const MessageList = () => {
 
           return (
             <div key={index} data-value={type} className="message">
-              <span className=" text-sm leading-3 pr-10">
+              <p className=" break-words py-1 text-sm leading-3 pr-10 relative">
                 {message.content}
-              </span>
+              </p>
               <div className="flex gap-1 items-center absolute right-2 bottom-1">
                 <small className=" text-[10px] leading-3">
                   {`${hours}:${minutes}`}

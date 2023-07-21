@@ -1,10 +1,6 @@
 import { AuthenticationGateContext } from "@/components/authenticationGate";
-import {
-  GetUnreadMessage,
-  GetUsersQueryResponse,
-  useGetUsersQuery,
-} from "@/hooks";
-import { Chat, User } from "@/types";
+import { GetUsersQueryResponse, useGetUsersQuery } from "@/hooks";
+import { Chat } from "@/types";
 import { QueryResult } from "@apollo/client";
 import {
   createContext,

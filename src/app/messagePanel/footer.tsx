@@ -11,13 +11,17 @@ import { useContext, useRef, useState, useCallback, useEffect } from "react";
 import { UserContext, MessageContext } from "../contexts";
 import { AuthenticationGateContext } from "@/components/authenticationGate";
 import { useMutation } from "@apollo/client";
+import {
+  addNewMessageToConversation,
+  addNewMessageToCurrentChat,
+} from "@/utils";
 
 const Footer = () => {
   const { user } = useContext(AuthenticationGateContext);
 
-  const { queryResult } = useContext(MessageContext);
+  const { queryResult: messageQueryResult } = useContext(MessageContext);
 
-  const { selectedUser } = useContext(UserContext);
+  const { selectedUser, getUserQueryResult } = useContext(UserContext);
 
   const [content, setContent] = useState("");
 
@@ -27,39 +31,35 @@ const Footer = () => {
     SendMessageQueryResponse,
     SendMessageVariables
   >(SEND_MESSAGE_QUERY_STRING, {
-    variables: {
-      senderId: user ? user._id : "",
-      recipientId: selectedUser ? selectedUser.user._id : "",
-      content: content,
-    },
-    onCompleted: (data) => {
-      const { sendMessage } = data;
-      queryResult?.updateQuery((prev) => {
-        if (!sendMessage) return prev;
-
-        let newMessagesList = [...prev.getMessages.messages];
-
-        newMessagesList.unshift(sendMessage);
-
-        return {
-          getMessages: {
-            isEndOfConversation: prev.getMessages.isEndOfConversation,
-            messages: newMessagesList,
-          },
-        };
-      });
-    },
+    onCompleted: (data) =>
+      addNewMessageToConversation({
+        queryResult: messageQueryResult,
+        message: data.sendMessage,
+      }),
   });
 
-  const send = useCallback(() => {
+  const send = useCallback(async () => {
     if (!content) return;
 
     if (content.replaceAll(" ", "").length === 0) return;
 
-    sendMessage();
+    await sendMessage({
+      variables: {
+        senderId: user ? user._id : "",
+        recipientId: selectedUser ? selectedUser.user._id : "",
+        content: content,
+      },
+    });
+
+    addNewMessageToCurrentChat({
+      queryResult: getUserQueryResult,
+      currentChat: selectedUser,
+      user: user,
+      newContent: content,
+    });
 
     setContent("");
-  }, [sendMessage, content]);
+  }, [sendMessage, selectedUser, content, user, getUserQueryResult]);
 
   useEffect(() => {
     const ref = inputRef.current;
