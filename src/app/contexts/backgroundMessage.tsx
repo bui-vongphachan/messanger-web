@@ -33,8 +33,7 @@ export const BackgroundMessageContextProvider = (props: {
     return () => {
       readMessagesResult.client.stop();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedUser, readMessages]);
+  }, [selectedUser, readMessages, readMessagesResult, user]);
 
   return (
     <BackgroundMessageContext.Provider value={null}>

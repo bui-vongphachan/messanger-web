@@ -36,6 +36,11 @@ export const graphqlClient = new ApolloClient({
               return incoming;
             },
           },
+          getUsers: {
+            merge(existing, incoming) {
+              return incoming;
+            },
+          },
         },
       },
     },
