@@ -1,66 +1,53 @@
-import { GetUsersQueryResponse } from "@/hooks";
-import { Chat, User } from "@/types";
-import { QueryResult, OperationVariables } from "@apollo/client";
-import { moveCurrentChatToTopOfList } from "./moveCurrentChatToTopOfList";
+import {
+  GetUsersQueryResponse,
+  GetUserVariables,
+  GET_USERS_QUERY_STRING,
+  SendMessageQueryResponse,
+} from "@/hooks";
+import { graphqlClient } from "@/startups";
+import { FetchResult } from "@apollo/client";
 
-export const addNewMessageToCurrentChat = (props: {
-  queryResult: QueryResult<GetUsersQueryResponse, OperationVariables> | null;
-  currentChat: Chat | null;
-  user: User | null;
-  newContent: string;
-}) => {
-  if (!props.queryResult) return;
+export const addNewMessageToCurrentChat = (
+  result: FetchResult<
+    SendMessageQueryResponse,
+    Record<string, any>,
+    Record<string, any>
+  >
+) => {
+  const { sendMessage } = result.data!;
 
-  props.queryResult.updateQuery((prev) => {
-    const index = prev.getUsers.findIndex(
-      (item) => item.user._id === props.currentChat?.user._id
-    );
+  graphqlClient.cache.updateQuery<GetUsersQueryResponse, GetUserVariables>(
+    {
+      query: GET_USERS_QUERY_STRING,
+      variables: {
+        userId: sendMessage.senderId as string,
+      },
+    },
+    (data) => {
+      if (!data) return;
 
-    if (index === -1) return prev;
+      const currentChatIndex = data.getUsers.findIndex(
+        (item) => item.user._id === sendMessage.recipientId
+      );
 
-    let currentChat = prev.getUsers[index];
+      if (currentChatIndex === -1) return;
 
-    /* ------------------------------------------------------------------------------------------------------------------ */
-    /* add current message to chat's latest message                                                                       */
-    /* ------------------------------------------------------------------------------------------------------------------ */
-    if (!currentChat.latestMessage) {
+      let currentChat = data.getUsers[currentChatIndex];
+
       currentChat = {
         ...currentChat,
-        latestMessage: {
-          content: props.newContent,
-          senderId: props.user ? props.user._id : "",
-          recipientId: props.currentChat ? props.currentChat.user._id : "",
-          sentDate: new Date(),
-          _id: "",
-          previousMessageId: null,
-          isRead: false,
-        },
+        latestMessage: sendMessage,
       };
-    } else {
-      currentChat = {
-        ...currentChat,
-        latestMessage: {
-          ...currentChat.latestMessage,
-          content: props.newContent,
-          sentDate: new Date(),
-          isRead: true,
-          previousMessageId: null,
-        },
+
+      const newChatList = [...data.getUsers].filter(
+        (_, index) => index !== currentChatIndex
+      );
+
+      newChatList.unshift(currentChat);
+
+      return {
+        getUsers: newChatList,
       };
     }
-
-    moveCurrentChatToTopOfList({
-      items: prev.getUsers,
-      index,
-      targetItem: currentChat,
-    });
-
-    return {
-      getUsers: {
-        ...prev.getUsers,
-      },
-    };
-  });
-
-  return;
+  );
 };
