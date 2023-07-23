@@ -28,6 +28,7 @@ export const GET_UNREAD_MESSAGES_QUERY_STRING = gql`
         recipientId
         sentDate
         isRead
+        previousMessageId
       }
       user {
         _id

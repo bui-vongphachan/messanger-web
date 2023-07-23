@@ -45,6 +45,8 @@ const subscriptionString = gql`
       senderId
       recipientId
       sentDate
+      previousMessageId
+      isRead
     }
   }
 `;
@@ -64,7 +66,7 @@ export const getNewMessageSubscribeOptions = (
 
       const newItem = subscriptionData.data.newMessageSubscriber;
 
-      if (newItem) newDataSet.push(newItem);
+      if (newItem) newDataSet.unshift(newItem);
 
       return {
         getMessages: {
