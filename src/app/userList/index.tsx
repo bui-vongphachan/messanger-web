@@ -1,52 +1,60 @@
+import { AuthenticationGateContext } from "@/components/authenticationGate";
+import { GetUnreadMessage } from "@/hooks";
 import { Message, User } from "@/types";
 import { removeUnreadIndecator } from "@/utils";
 import Image from "next/image";
-import { Fragment, useCallback } from "react";
-import { AllProps } from "../page";
+import { Fragment, useCallback, useContext } from "react";
+import { UserContext } from "../contexts";
 import UserListLoading from "./loading";
 
-const listId = "user-list";
-
-const UserList = (props: AllProps) => {
+const UserList = () => {
   return (
     <div className=" flex flex-col overflow-x-hidden">
       <h1 className=" text-lg font-semibold py-4 px-6">Users</h1>
-      <ul
-        id={listId}
-        className=" flex-1 overflow-x-hidden overflow-y-auto w-full divide-y-[0px]"
-      >
-        <Content {...props} />
+      <ul className=" flex-1 overflow-x-hidden overflow-y-auto w-full divide-y-[0px]">
+        <Content />
       </ul>
     </div>
   );
 };
 
-const Content = (props: AllProps) => {
-  const { user, setSelectedUser, getUsersQueryResult, selectedUser } = props;
+const Content = () => {
+  const { user } = useContext(AuthenticationGateContext);
+
+  const {
+    selectedUser,
+    setSelectedUser,
+    getUserQueryResult,
+    setSelectedUserIndex,
+  } = useContext(UserContext);
+
+  GetUnreadMessage({ userId: user?._id! }, getUserQueryResult!);
 
   const handleClick = useCallback(
     (item: { user: User; latestMessage: Message | null }, index: number) => {
       setSelectedUser(item);
 
-      if (!getUsersQueryResult) return;
+      setSelectedUserIndex(index);
+
+      if (!getUserQueryResult) return;
 
       if (!item.latestMessage) return;
 
       if (item.latestMessage.isRead) return;
 
-      removeUnreadIndecator(getUsersQueryResult, index);
+      removeUnreadIndecator(getUserQueryResult, index);
     },
-    [getUsersQueryResult, setSelectedUser]
+    [getUserQueryResult, setSelectedUser, setSelectedUserIndex]
   );
 
-  if (!getUsersQueryResult || getUsersQueryResult.loading)
+  if (!getUserQueryResult || getUserQueryResult.loading)
     return <UserListLoading />;
 
-  if (!getUsersQueryResult.data || !!getUsersQueryResult.error) return null;
+  if (!getUserQueryResult.data || !!getUserQueryResult.error) return null;
 
   return (
     <Fragment>
-      {getUsersQueryResult.data.getUsers.map((item, index) => {
+      {getUserQueryResult.data.getUsers.map((item, index) => {
         const { latestMessage } = item;
         return (
           /* Conversation Item */

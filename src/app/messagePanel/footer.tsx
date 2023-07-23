@@ -7,16 +7,19 @@ import {
 } from "@/hooks";
 import Image from "next/image";
 import microphoneIcon from "../send.svg";
-import { useRef, useState, useCallback, useEffect } from "react";
+import { useContext, useRef, useState, useCallback, useEffect } from "react";
 import { useMutation } from "@apollo/client";
+import { UserContext } from "../contexts";
+import { AuthenticationGateContext } from "@/components/authenticationGate";
 import {
   addNewMessageToConversation,
   addNewMessageToCurrentChat,
 } from "@/utils";
-import { AllProps } from "../page";
 
-const Footer = (props: AllProps) => {
-  const { user, selectedUser } = props;
+const Footer = () => {
+  const { user } = useContext(AuthenticationGateContext);
+
+  const { selectedUser } = useContext(UserContext);
 
   const [content, setContent] = useState("");
 
