@@ -9,17 +9,20 @@ export interface GetUsersQueryResponse {
   }[];
 }
 
-interface Variables extends AnyData {
+export interface GetUserVariables extends AnyData {
   userId?: string;
 }
 
-export const useGetUsersQuery = (props: Variables) => {
-  return useQuery<GetUsersQueryResponse, Variables>(GET_USERS_QUERY_STRING, {
-    variables: props,
-  });
+export const useGetUsersQuery = (props: GetUserVariables) => {
+  return useQuery<GetUsersQueryResponse, GetUserVariables>(
+    GET_USERS_QUERY_STRING,
+    {
+      variables: props,
+    }
+  );
 };
 
-const GET_USERS_QUERY_STRING = gql`
+export const GET_USERS_QUERY_STRING = gql`
   query GetUsers($userId: String) {
     getUsers(userId: $userId) {
       latestMessage {

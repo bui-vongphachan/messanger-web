@@ -1,23 +1,42 @@
-import { GetMessageQueryResponse, GetMessageVariables } from "@/hooks";
-import { Message } from "@/types";
-import { QueryResult } from "@apollo/client";
+import {
+  GetMessageQueryResponse,
+  GetMessageVariables,
+  GET_MESSAGE_QUERY_STRING,
+  SendMessageQueryResponse,
+} from "@/hooks";
+import { graphqlClient } from "@/startups";
+import { FetchResult } from "@apollo/client";
 
-export const addNewMessageToConversation = (props: {
-  queryResult: QueryResult<GetMessageQueryResponse, GetMessageVariables> | null;
-  message: Message | null;
-}) => {
-  props.queryResult?.updateQuery((prev) => {
-    if (!props.message) return prev;
+export const addNewMessageToConversation = (
+  result: FetchResult<
+    SendMessageQueryResponse,
+    Record<string, any>,
+    Record<string, any>
+  >
+) => {
+  const { sendMessage } = result.data!;
 
-    let newMessagesList = [...prev.getMessages.messages];
-
-    newMessagesList.unshift(props.message);
-
-    return {
-      getMessages: {
-        isEndOfConversation: prev.getMessages.isEndOfConversation,
-        messages: newMessagesList,
+  graphqlClient.cache.updateQuery<GetMessageQueryResponse, GetMessageVariables>(
+    {
+      query: GET_MESSAGE_QUERY_STRING,
+      variables: {
+        userId: sendMessage.senderId as string,
+        partnerId: sendMessage.recipientId as string,
       },
-    };
-  });
+    },
+    (data) => {
+      if (!data) return;
+
+      const newList = [...data.getMessages.messages];
+
+      newList.unshift(sendMessage);
+
+      return {
+        getMessages: {
+          ...data.getMessages,
+          messages: newList,
+        },
+      };
+    }
+  );
 };

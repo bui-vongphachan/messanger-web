@@ -8,9 +8,9 @@ import {
 import Image from "next/image";
 import microphoneIcon from "../send.svg";
 import { useContext, useRef, useState, useCallback, useEffect } from "react";
-import { UserContext, MessageContext } from "../contexts";
-import { AuthenticationGateContext } from "@/components/authenticationGate";
 import { useMutation } from "@apollo/client";
+import { UserContext } from "../contexts";
+import { AuthenticationGateContext } from "@/components/authenticationGate";
 import {
   addNewMessageToConversation,
   addNewMessageToCurrentChat,
@@ -19,9 +19,7 @@ import {
 const Footer = () => {
   const { user } = useContext(AuthenticationGateContext);
 
-  const { queryResult: messageQueryResult } = useContext(MessageContext);
-
-  const { selectedUser, getUserQueryResult } = useContext(UserContext);
+  const { selectedUser } = useContext(UserContext);
 
   const [content, setContent] = useState("");
 
@@ -30,20 +28,14 @@ const Footer = () => {
   const [sendMessage, { error, loading }] = useMutation<
     SendMessageQueryResponse,
     SendMessageVariables
-  >(SEND_MESSAGE_QUERY_STRING, {
-    onCompleted: (data) =>
-      addNewMessageToConversation({
-        queryResult: messageQueryResult,
-        message: data.sendMessage,
-      }),
-  });
+  >(SEND_MESSAGE_QUERY_STRING);
 
   const send = useCallback(async () => {
     if (!content) return;
 
     if (content.replaceAll(" ", "").length === 0) return;
 
-    await sendMessage({
+    const result = await sendMessage({
       variables: {
         senderId: user ? user._id : "",
         recipientId: selectedUser ? selectedUser.user._id : "",
@@ -51,15 +43,12 @@ const Footer = () => {
       },
     });
 
-    addNewMessageToCurrentChat({
-      queryResult: getUserQueryResult,
-      currentChat: selectedUser,
-      user: user,
-      newContent: content,
-    });
+    addNewMessageToConversation(result);
+
+    addNewMessageToCurrentChat(result);
 
     setContent("");
-  }, [sendMessage, selectedUser, content, user, getUserQueryResult]);
+  }, [sendMessage, selectedUser, content, user]);
 
   useEffect(() => {
     const ref = inputRef.current;

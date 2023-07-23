@@ -3,7 +3,7 @@ import { GetUnreadMessage } from "@/hooks";
 import { Message, User } from "@/types";
 import { removeUnreadIndecator } from "@/utils";
 import Image from "next/image";
-import { useContext, Fragment, useCallback } from "react";
+import { Fragment, useCallback, useContext } from "react";
 import { UserContext } from "../contexts";
 import UserListLoading from "./loading";
 
