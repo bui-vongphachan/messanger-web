@@ -1,26 +1,12 @@
-import { removeUnreadIndecator } from "@/utils";
 import { Player } from "@lottiefiles/react-lottie-player";
-import { useCallback, useContext } from "react";
-import { UserContext } from "../contexts";
 import Footer from "./footer";
 import MessageList from "./messageList";
 import ChatAnimation from "./30464-coda-chaters.json";
 import classes from "classnames";
-import Header from "./header";
+import { AllProps } from "../page";
 
-const MessagePanel = () => {
-  const { selectedUser, getUserQueryResult, selectedUserIndex } =
-    useContext(UserContext);
-
-  const readMessages = useCallback(() => {
-    if (!selectedUser) return;
-
-    if (!getUserQueryResult) return;
-
-    if (selectedUserIndex === null) return;
-
-    removeUnreadIndecator(getUserQueryResult, selectedUserIndex);
-  }, [selectedUser, getUserQueryResult, selectedUserIndex]);
+const MessagePanel = (props: AllProps) => {
+  const { selectedUser } = props;
 
   if (!selectedUser) {
     return (
@@ -43,11 +29,9 @@ const MessagePanel = () => {
           hidden: !selectedUser,
         }
       )}
-      onClick={readMessages}
     >
-      <Header />
-      <MessageList />
-      <Footer />
+      <MessageList {...props} />
+      <Footer {...props} />
     </section>
   );
 };

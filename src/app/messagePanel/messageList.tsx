@@ -1,71 +1,16 @@
 "use client";
 
-import { AuthenticationGateContext } from "@/components/authenticationGate";
-import { useCallback, useContext } from "react";
-import { MessageContext, UserContext } from "../contexts";
 import BottomScroller from "@/components/bottomScroller";
-import { useGetPreviousMessageQuery } from "@/hooks";
+import { AllProps } from "../page";
 
-const MessageList = () => {
-  const { queryResult } = useContext(MessageContext);
+const MessageList = (props: AllProps) => {
+  const { getMessagesQueryResult, selectedUser, user } = props;
 
-  const { selectedUser } = useContext(UserContext);
-
-  const { user } = useContext(AuthenticationGateContext);
-
-  const [getPreviousMessage, { loading: gettingPreviousMessage }] =
-    useGetPreviousMessageQuery({});
-
-  const getPreviousMessageCaller = useCallback(async () => {
-    if (gettingPreviousMessage) return;
-
-    if (!queryResult) return;
-
-    if (!queryResult.data) return;
-
-    if (!queryResult.data.getMessages) return;
-
-    if (queryResult.data.getMessages.isEndOfConversation) return;
-
-    if (queryResult.data.getMessages.isEndOfConversation) return;
-
-    if (!queryResult.data.getMessages.messages) return;
-
-    const { data: previousMessageData } = await getPreviousMessage({
-      variables: {
-        currentMessageId:
-          queryResult.data.getMessages.messages[
-            queryResult.data.getMessages.messages.length - 1
-          ]._id,
-      },
-    });
-
-    if (!previousMessageData) return;
-
-    queryResult.updateQuery((prev) => {
-      const newMessages = [
-        ...prev.getMessages.messages,
-        ...previousMessageData.getPreviousMessages.messages,
-      ];
-
-      return {
-        getMessages: {
-          isEndOfConversation:
-            previousMessageData.getPreviousMessages.isEndOfConversation,
-          messages: newMessages,
-        },
-      };
-    });
-  }, [getPreviousMessage, queryResult, gettingPreviousMessage]);
-
-  const { data } = queryResult!;
+  const { data } = getMessagesQueryResult!;
 
   return (
     <div className="flex-1 flex flex-col justify-end overflow-hidden relative">
-      <BottomScroller
-        resetDependancy={selectedUser}
-        onTopReached={getPreviousMessageCaller}
-      >
+      <BottomScroller resetDependancy={selectedUser} onTopReached={() => {}}>
         {data?.getMessages.messages.map((message, index) => {
           const type = message.senderId === user?._id ? "out" : "in";
 
