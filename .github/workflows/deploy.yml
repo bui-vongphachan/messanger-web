@@ -16,8 +16,8 @@ jobs:
 
     - name: Set up secret file
       env:
-        DEBUG_PASSWORD: ${{ secrets.DEBUG_PASSWORD }}
-        DEBUG_SECRET_KEY: ${{ secrets.DEBUG_SECRET_KEY }}
+        DEBUG_PASSWORD: ${{ secrets.SSH_IP_ADDRESS }}
+        DEBUG_SECRET_KEY: ${{ secrets.SSH_PUBLIC_KEY }}
       run: |
         echo $DEBUG_PASSWORD
         echo $DEBUG_SECRET_KEY
