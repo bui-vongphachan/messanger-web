@@ -13,14 +13,6 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-
-    - name: Set up secret file
-      env:
-        DEBUG_PASSWORD: ${{ secrets.SSH_IP_ADDRESS }}
-        DEBUG_SECRET_KEY: ${{ secrets.SSH_PUBLIC_KEY }}
-      run: |
-        echo ${{secrets.SSH_PUBLIC_KEY}} | sed 's/./& /g'
-        echo $DEBUG_SECRET_KEY
       
     - name: SSH to private server
       uses: appleboy/ssh-action@master
