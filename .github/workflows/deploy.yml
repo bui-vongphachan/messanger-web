@@ -22,7 +22,7 @@ jobs:
           key: ${{ secrets.SSH_PUBLIC_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            cd /home/bui/chat-app/messanger-web
+            cd /home/bui/messanger-web
             git checkout main
             git pull
             docker-compose down
